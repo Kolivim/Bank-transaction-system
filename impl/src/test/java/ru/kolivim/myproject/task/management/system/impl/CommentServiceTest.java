@@ -19,15 +19,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import ru.kolivim.myproject.task.management.system.api.dto.comment.CommentDto;
-import ru.kolivim.myproject.task.management.system.api.dto.task.PriorityType;
-import ru.kolivim.myproject.task.management.system.api.dto.task.StatusType;
-import ru.kolivim.myproject.task.management.system.domain.comment.Comment;
-import ru.kolivim.myproject.task.management.system.domain.task.Task;
-import ru.kolivim.myproject.task.management.system.impl.mapper.comment.CommentMapper;
-import ru.kolivim.myproject.task.management.system.impl.repository.comment.CommentRepository;
-import ru.kolivim.myproject.task.management.system.impl.repository.task.TaskRepository;
-import ru.kolivim.myproject.task.management.system.impl.service.comment.CommentService;
+//import ru.kolivim.myproject.task.management.system.api.dto.comment.CommentDto;
+//import ru.kolivim.myproject.task.management.system.api.dto.task.PriorityType;
+//import ru.kolivim.myproject.task.management.system.api.dto.task.StatusType;
+//import ru.kolivim.myproject.task.management.system.domain.comment.Comment;
+//import ru.kolivim.myproject.task.management.system.domain.task.Task;
+//import ru.kolivim.myproject.task.management.system.impl.mapper.comment.CommentMapper;
+//import ru.kolivim.myproject.task.management.system.impl.repository.comment.CommentRepository;
+//import ru.kolivim.myproject.task.management.system.impl.repository.task.TaskRepository;
+//import ru.kolivim.myproject.task.management.system.impl.service.comment.CommentService;
 import ru.kolivim.myproject.task.management.system.impl.service.task.TaskService;
 import ru.kolivim.myproject.task.management.system.impl.utils.technikalUser.TechnicalUserConfig;
 
@@ -36,12 +36,14 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/*
 @Testcontainers
 @SpringBootTest
 @AutoConfigureMockMvc
 @RequiredArgsConstructor
+*/
 public class CommentServiceTest {
-
+/*
     @Autowired
     MockMvc mockMvc;
     @Autowired
@@ -432,5 +434,5 @@ public class CommentServiceTest {
 //        Assertions.assertEquals(1, 1);
 //    }
 
-
+*/
 }

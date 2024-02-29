@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kolivim.myproject.task.management.system.api.dto.account.AccountDto;
 import ru.kolivim.myproject.task.management.system.api.dto.auth.JwtDto;
-import ru.kolivim.myproject.task.management.system.api.resource.account.AccountResource;
-import ru.kolivim.myproject.task.management.system.impl.service.account.AccountService;
+import ru.kolivim.myproject.task.management.system.api.resource.user.UserResource;
+import ru.kolivim.myproject.task.management.system.impl.service.user.UserService;
 import ru.kolivim.myproject.task.management.system.impl.utils.auth.AuthUtil;
 
 import javax.security.auth.login.AccountException;
@@ -23,16 +23,16 @@ import java.util.UUID;
 @RestController
 @RequestMapping("api/v1/account")
 @RequiredArgsConstructor
-public class AccountResourceImpl implements AccountResource{
+public class AccountResourceImpl implements UserResource {
 
-    private final AccountService accountServices;
+    private final UserService userServices;
 
     @Override
     @GetMapping()
     public ResponseEntity get(@RequestParam String email) {
         log.info("AccountResourceImpl:get() startMethod");
         try {
-            return ResponseEntity.ok(accountServices.getByEmail(email));
+            return ResponseEntity.ok(userServices.getByEmail(email));
         } catch (AccountException e) {
             return generatorResponse(e);
         }
@@ -43,7 +43,7 @@ public class AccountResourceImpl implements AccountResource{
     public ResponseEntity<AccountDto> update(@RequestBody AccountDto account) {
         log.info("AccountResourceImpl:update() startMethod");
         try {
-            return ResponseEntity.ok(accountServices.update(account));
+            return ResponseEntity.ok(userServices.update(account));
         } catch (AccountException e) {
             return generatorResponse(e);
         }
@@ -54,7 +54,7 @@ public class AccountResourceImpl implements AccountResource{
     public ResponseEntity<AccountDto> create(@RequestBody AccountDto account) {
         log.info("AccountResourceImpl:create() startMethod");
         try {
-            return ResponseEntity.ok(accountServices.create(account));
+            return ResponseEntity.ok(userServices.create(account));
         } catch (AccountException e) {
             return generatorResponse(e);
         }
@@ -65,7 +65,7 @@ public class AccountResourceImpl implements AccountResource{
     public ResponseEntity getMe() {
         log.info("AccountResourceImpl:getMe() startMethod");
         try {
-            return ResponseEntity.ok(accountServices.getMe());
+            return ResponseEntity.ok(userServices.getMe());
         } catch (AccountException e) {
             return generatorResponse(e);
         }
@@ -75,7 +75,7 @@ public class AccountResourceImpl implements AccountResource{
     public ResponseEntity putMe(@RequestBody AccountDto accountDto) throws AccountException {
         log.info("AccountResourceImpl:putMe() startMethod");
         try {
-            return ResponseEntity.ok(accountServices.putMe(accountDto));
+            return ResponseEntity.ok(userServices.putMe(accountDto));
         } catch (AccountException e) {
             return generatorResponse(e);
         }
@@ -84,7 +84,7 @@ public class AccountResourceImpl implements AccountResource{
     public ResponseEntity deleteMe() throws AccountException {
         log.info("AccountResourceImpl:deleteMe() startMethod");
         try {
-            return ResponseEntity.ok(accountServices.delete());
+            return ResponseEntity.ok(userServices.delete());
         } catch (AccountException e) {
             return generatorResponse(e);
         }
@@ -94,7 +94,7 @@ public class AccountResourceImpl implements AccountResource{
     public ResponseEntity getId(@PathVariable UUID id) {
         log.info("AccountResourceImpl:getId() startMethod");
         try {
-            return ResponseEntity.ok(accountServices.getId(id));
+            return ResponseEntity.ok(userServices.getId(id));
         } catch (AccountException e) {
             return generatorResponse(e);
         }
@@ -104,7 +104,7 @@ public class AccountResourceImpl implements AccountResource{
     public ResponseEntity deleteId(UUID id) throws AccountException {
         log.info("AccountResourceImpl:deleteId() startMethod");
         try {
-            return ResponseEntity.ok(accountServices.deleteId(id));
+            return ResponseEntity.ok(userServices.deleteId(id));
         } catch (AccountException e) {
             return generatorResponse(e);
         }

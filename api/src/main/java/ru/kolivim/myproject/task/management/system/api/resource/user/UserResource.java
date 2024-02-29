@@ -1,4 +1,4 @@
-package ru.kolivim.myproject.task.management.system.api.resource.account;
+package ru.kolivim.myproject.task.management.system.api.resource.user;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -16,10 +16,10 @@ import java.util.UUID;
 
 @RestController
 //@RequestMapping("api/v1/account/")
-@RequestMapping("api/v1/account")
+@RequestMapping("api/v1/user")
 @Tag(name = "Api сервиса аккаунта",
         description = "Сервис для создания, редактирования, получения и удаления аккаунта")
-public interface AccountResource {
+public interface UserResource {
 
     @Operation(summary = "Получение данных акаунта по email",
             description = "Получение данных существующего акаунта по email")

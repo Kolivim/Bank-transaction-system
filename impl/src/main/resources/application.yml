@@ -6,7 +6,7 @@ spring:
   liquibase:
     enabled: true
     drop-first: ${DROP_FIRST:false}
-    change-log: classpath:database-task.management-changelog.xml
+    change-log: classpath:database-bank.transaction.system-changelog.xml
 
 
   datasource:

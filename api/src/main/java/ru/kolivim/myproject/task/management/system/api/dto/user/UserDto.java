@@ -17,18 +17,17 @@ public class UserDto extends BaseDto {
     @Schema(description = "Идентификатор пользователя")
     private UUID id;
 
-
     @Schema(description = "Метка удаления")
     private boolean isDeleted;
 
     @Schema(description = "Номера телефонов / телефона")
-    private List<String> phoneList;
+    private List<String> phoneList;                                              /** Достаем селектом из таблицы Phone*/
 
     @Schema(description = "Список Email пользователя")
-    private List<String> emailList;
+    private List<String> emailList;                                              /** Достаем селектом из таблицы Email*/
 
     @Schema(description = "Дата рождения пользователя")
-    ZonedDateTime birthday;
+    ZonedDateTime birthDate;
 
     @Schema(description = "ФИО пользователя")
     private String fullName;

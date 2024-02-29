@@ -1,11 +1,10 @@
-package ru.kolivim.myproject.task.management.system.impl.service.account;
+package ru.kolivim.myproject.task.management.system.impl.service.user;
 
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -14,61 +13,76 @@ import ru.kolivim.myproject.task.management.system.api.dto.account.AccountSearch
 import ru.kolivim.myproject.task.management.system.api.dto.auth.AuthenticateDto;
 import ru.kolivim.myproject.task.management.system.api.dto.auth.JwtDto;
 import ru.kolivim.myproject.task.management.system.domain.account.Account;
-import ru.kolivim.myproject.task.management.system.domain.account.Account_;
 import ru.kolivim.myproject.task.management.system.domain.role.Role;
+import ru.kolivim.myproject.task.management.system.domain.user.User;
 import ru.kolivim.myproject.task.management.system.impl.mapper.account.MapperAccount;
+import ru.kolivim.myproject.task.management.system.impl.repository.user.UserRepository;
 import ru.kolivim.myproject.task.management.system.impl.service.role.RoleService;
 import ru.kolivim.myproject.task.management.system.impl.utils.auth.AuthUtil;
-import ru.kolivim.myproject.task.management.system.impl.utils.specification.SpecificationUtils;
 import ru.kolivim.myproject.task.management.system.impl.repository.account.AccountRepository;
 
 import javax.security.auth.login.AccountException;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 
 @Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class AccountService {
+public class UserService {
     private static final String BADREUQEST = "bad reqest";
     private final MapperAccount mapperAccount;
     private final AccountRepository accountRepository;
+    private final UserRepository userRepository;
 
     private final RoleService roleService;
 
     public AccountDto create(AccountDto accountDto) throws AccountException {
         log.info("AccountService:create() startMethod");
+        /*
         Account account = mapperAccount.toEntity(accountDto);
         account.setRegistrationDate(LocalDateTime.now(ZoneId.of("Z")));
         account.setRoles(roleService.getRoleSet(Arrays.asList("USER", "MODERATOR")));
         account = accountRepository.save(account);
         return mapperAccount.toDto(account);
+        */
+        return null;
     }
 
     public AccountDto update(AccountDto accountDto) throws AccountException {
         log.info("AccountService:putMe() startMethod");
+        /*
         Account account = accountDto.getId() != null ? accountRepository
                 .findById(accountDto.getId()).get() : accountRepository.findById(AuthUtil.getUserId()).get();
         account = mapperAccount.rewriteEntity(accountRepository.findById(account.getId()).get(), accountDto);
         accountRepository.save(account);
         return mapperAccount.toDto(account);
+                */
+        return null;
     }
 
     public AccountDto getByEmail(String email) throws AccountException {
         log.info("AccountService:get(String email) startMethod");
+        /*
         return mapperAccount.toDto(accountRepository.findFirstByEmail(email).orElseThrow(() -> new AccountException("BADREUQEST")));
+        */
+        return null;
     }
 
     public AccountDto getId(UUID uuid) throws AccountException {
         log.info("AccountService:get(String email) startMethod");
+        /*
         return mapperAccount.toDto(accountRepository.findById(uuid).orElseThrow(() -> new AccountException("BADREUQEST")));
+        */
+        return null;
     }
 
     public AccountDto getMe() throws AccountException {
         log.info("AccountService: getMe() startMethod");
+        /*
         return mapperAccount.toDto(accountRepository.findById(AuthUtil.getUserId()).orElseThrow(() -> new AccountException(BADREUQEST)));
+        */
+        return null;
     }
 
     /*
@@ -92,6 +106,7 @@ public class AccountService {
 
 
     public Page<AccountDto> getAll(AccountSearchDto accountSearchDto, Pageable pageable) throws AccountException {
+        /*
         Specification spec = SpecificationUtils.equal(Account_.COUNTRY, accountSearchDto.getCountry())
                 .or(SpecificationUtils.like(Account_.FIRST_NAME, accountSearchDto.getFirstName()))
                 .or(SpecificationUtils.like(Account_.LAST_NAME, accountSearchDto.getLastName()))
@@ -101,11 +116,16 @@ public class AccountService {
                 .or(SpecificationUtils.in(Account_.ID, accountSearchDto.getIds()));
         Page<Account> accounts = accountRepository.findAll(spec, pageable);
         return accounts.map(mapperAccount::toDto);
+        */
+        return null;
     }
 
     public AccountDto putMe(AccountDto accountDto) throws AccountException {
         log.info("AccountService:putMe() startMethod");
+        /*
         return mapperAccount.toDto(mapperAccount.rewriteEntity(accountRepository.findById(AuthUtil.getUserId()).get(), accountDto));
+        */
+        return null;
     }
 
     public boolean delete() throws AccountException {
@@ -123,6 +143,8 @@ public class AccountService {
 
     public JwtDto getJwtDto(AuthenticateDto authenticateDto) {
         log.info("AccountService:getJwtDto() startMethod");
+
+        /*
         Optional<Account> account = accountRepository.findFirstByEmail(authenticateDto.getEmail());
         Assert.isTrue(account.isPresent());
         Assert.isTrue(account.get().getPassword().equals(authenticateDto.getPassword()));
@@ -131,11 +153,24 @@ public class AccountService {
         jwtDto.setEmail(account.get().getEmail());
         jwtDto.setRoles(listOfRolesFromSetOfRoles(account.get().getRoles()));
         account.get().setLastOnlineTime(LocalDateTime.now());
+        */
+
+        Optional<User> user = userRepository.findByLogin(authenticateDto.getLogin());
+        Assert.isTrue(user.isPresent());
+        Assert.isTrue(user.get().getPassword().equals(authenticateDto.getPassword()));
+        JwtDto jwtDto = new JwtDto();
+        jwtDto.setId(user.get().getId());
+        jwtDto.setEmail(user.get().getLogin());
+//        jwtDto.setRoles(listOfRolesFromSetOfRoles(user.get().getRoles()));
+
         return jwtDto;
     }
 
     public Boolean doesAccountWithSuchEmailExist(String email) {
+        /*
         return accountRepository.findFirstByEmail(email).isPresent();
+        */
+        return null;
     }
 
     private List<String> listOfRolesFromSetOfRoles(Set<Role> roles) {
@@ -148,7 +183,10 @@ public class AccountService {
     }
 
     public Account getAccountByEmail(String email) {
+        /*
         return accountRepository.findFirstByEmail(email).orElse(null);
+        */
+        return null;
     }
 
     public void save(Account account) {

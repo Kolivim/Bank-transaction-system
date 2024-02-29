@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 @Data
 public class AccountDto extends BaseDto {
 
-    @Schema(description = "Сумма")
-    private Integer sum;
+    @Schema(description = "Сумма на счете")
+    private Long balance;
 
     //////////////////////////////////////////////////////////////////////////////////////////
 

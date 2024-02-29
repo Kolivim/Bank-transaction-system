@@ -3,11 +3,12 @@ package ru.kolivim.myproject.task.management.system.impl.service.passRecovery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.kolivim.myproject.task.management.system.api.dto.auth.NewPasswordDto;
+
 import ru.kolivim.myproject.task.management.system.domain.account.Account;
 import ru.kolivim.myproject.task.management.system.domain.passwordRecovery.RecoveryToken;
 import ru.kolivim.myproject.task.management.system.impl.mapper.account.MapperAccount;
 import ru.kolivim.myproject.task.management.system.impl.repository.recoveryToken.RecoveryTokenRepository;
-import ru.kolivim.myproject.task.management.system.impl.service.account.AccountService;
+import ru.kolivim.myproject.task.management.system.impl.service.user.UserService;
 import ru.kolivim.myproject.task.management.system.impl.utils.mail.MailUtil;
 
 import java.time.LocalDateTime;
@@ -18,14 +19,14 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class RecoveryService {
-    private final AccountService accountService;
+    private final UserService userService;
     private final RecoveryTokenRepository tokenRepository;
     private final MailUtil mailUtil;
     private final MapperAccount accountMapper;
     private final String host = "localhost:8099";
 
     public Boolean recover(String email) {
-        Account account = accountService.getAccountByEmail(email);
+        ru.kolivim.myproject.task.management.system.domain.account.Account account = userService.getAccountByEmail(email);
         if (account == null) {
             return false;
         }
@@ -51,7 +52,7 @@ public class RecoveryService {
         }
         Account account = token.getAccount();
         account.setPassword(passwordDto.getPassword());
-        accountService.save(account);
+        userService.save(account);
         tokenRepository.delete(token);
         return true;
     }

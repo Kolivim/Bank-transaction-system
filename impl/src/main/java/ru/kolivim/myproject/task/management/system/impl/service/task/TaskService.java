@@ -8,14 +8,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kolivim.myproject.task.management.system.api.dto.search.BaseSearchDto;
-import ru.kolivim.myproject.task.management.system.api.dto.task.TaskDTO;
-import ru.kolivim.myproject.task.management.system.domain.task.Task;
-import ru.kolivim.myproject.task.management.system.domain.task.Task_;
 import ru.kolivim.myproject.task.management.system.domain.user.User;
 import ru.kolivim.myproject.task.management.system.impl.exception.NotFoundException;
-import ru.kolivim.myproject.task.management.system.impl.mapper.comment.CommentMapper;
-import ru.kolivim.myproject.task.management.system.impl.mapper.task.TaskMapper;
-import ru.kolivim.myproject.task.management.system.impl.repository.task.TaskRepository;
+
 import ru.kolivim.myproject.task.management.system.impl.repository.user.UserRepository;
 import ru.kolivim.myproject.task.management.system.impl.utils.auth.AuthUtil;
 import ru.kolivim.myproject.task.management.system.impl.utils.specification.SpecificationUtils;
@@ -23,12 +18,12 @@ import ru.kolivim.myproject.task.management.system.impl.utils.specification.Spec
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
-@Slf4j
-@Service
-@Transactional
-@RequiredArgsConstructor
+//@Slf4j
+//@Service
+//@Transactional
+//@RequiredArgsConstructor
 public class TaskService {
-
+/*
     private final TaskMapper taskMapper;
     private final CommentMapper commentMapper;
     private final TaskRepository taskRepository;
@@ -182,4 +177,5 @@ public class TaskService {
         return true;
     }
 
+    */
 }

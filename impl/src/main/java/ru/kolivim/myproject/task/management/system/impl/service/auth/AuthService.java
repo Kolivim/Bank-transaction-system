@@ -9,7 +9,7 @@ import ru.kolivim.myproject.task.management.system.api.dto.auth.AuthenticateResp
 import ru.kolivim.myproject.task.management.system.api.dto.auth.JwtDto;
 import ru.kolivim.myproject.task.management.system.api.dto.auth.RegistrationDto;
 import ru.kolivim.myproject.task.management.system.impl.mapper.account.MapperAccount;
-import ru.kolivim.myproject.task.management.system.impl.service.account.AccountService;
+import ru.kolivim.myproject.task.management.system.impl.service.user.UserService;
 import ru.kolivim.myproject.task.management.system.impl.security.jwt.TokenGenerator;
 
 import javax.security.auth.login.AccountException;
@@ -17,12 +17,12 @@ import javax.security.auth.login.AccountException;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-    private final AccountService accountServices;
+    private final UserService userServices;
     private final MapperAccount mapperAccount;
     private final TokenGenerator tokenGenerator;
 
     public AuthenticateResponseDto login(AuthenticateDto authenticateDto) {
-        JwtDto jwtDto = accountServices.getJwtDto(authenticateDto);
+        JwtDto jwtDto = userServices.getJwtDto(authenticateDto);
         if(jwtDto==null){return new AuthenticateResponseDto();}
         AuthenticateResponseDto responseDto = new AuthenticateResponseDto();
         responseDto.setAccessToken(tokenGenerator.createToken(jwtDto));
@@ -31,15 +31,17 @@ public class AuthService {
     }
 
     public Boolean register(RegistrationDto registrationDto) {
-        if(accountServices.doesAccountWithSuchEmailExist(registrationDto.getEmail())){
+        /*
+        if(userServices.doesAccountWithSuchEmailExist(registrationDto.getEmail())){
             return false;
         }
         AccountDto accountDto = mapperAccount.accountDtoFromRegistrationDto(registrationDto);
         try {
-            accountServices.create(accountDto);
+            userServices.create(accountDto);
         } catch (AccountException e) {
             throw new RuntimeException(e);
         }
+        */
         return true;
     }
 

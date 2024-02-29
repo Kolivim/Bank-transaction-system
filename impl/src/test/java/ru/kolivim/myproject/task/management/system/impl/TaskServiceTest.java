@@ -19,11 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import ru.kolivim.myproject.task.management.system.api.dto.task.PriorityType;
-import ru.kolivim.myproject.task.management.system.api.dto.task.StatusType;
-import ru.kolivim.myproject.task.management.system.api.dto.task.TaskDTO;
-import ru.kolivim.myproject.task.management.system.domain.account.Account;
-import ru.kolivim.myproject.task.management.system.domain.task.Task;
+
 import ru.kolivim.myproject.task.management.system.impl.mapper.comment.CommentMapper;
 import ru.kolivim.myproject.task.management.system.impl.mapper.task.TaskMapper;
 import ru.kolivim.myproject.task.management.system.impl.repository.account.AccountRepository;
@@ -43,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @AutoConfigureMockMvc
 @RequiredArgsConstructor
 public class TaskServiceTest {
-
+/*
     @Autowired
     MockMvc mockMvc;
     @Autowired
@@ -605,4 +601,6 @@ public void getAllMeExecutorId() {
 
         assertThrows(Exception.class, () -> taskService.updateExecutor(taskDTO));
     }
+
+    */
 }
