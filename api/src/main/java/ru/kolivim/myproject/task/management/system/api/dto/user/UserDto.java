@@ -6,6 +6,8 @@ import lombok.Setter;
 import ru.kolivim.myproject.task.management.system.api.dto.base.BaseDto;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -14,21 +16,41 @@ public class UserDto extends BaseDto {
 
     @Schema(description = "Идентификатор пользователя")
     private UUID id;
+
+
     @Schema(description = "Метка удаления")
     private boolean isDeleted;
-    @Schema(description = "Имя пользователя")
-    private String firstName;
-    @Schema(description = "Фамилия пользователя")
-    private String lastName;
-    @Schema(description = "Email")
-    private String email;
 
-    private LocalDateTime registrationDate;
+    @Schema(description = "Номера телефонов / телефона")
+    private List<String> phoneList;
 
-    private LocalDateTime createdOn;
+    @Schema(description = "Список Email пользователя")
+    private List<String> emailList;
 
-    private LocalDateTime updatedOn;
+    @Schema(description = "Дата рождения пользователя")
+    ZonedDateTime birthday;
+
+    @Schema(description = "ФИО пользователя")
+    private String fullName;
+
+    @Schema(description = "Логин")
+    private String login;
 
     @Schema(description = "Пароль")
     private String password;
+
+    /** Без него обойтись смогу*/
+//    @Schema(description = "Идентификатор банковского аккаунта")
+//    private UUID accountId;
+
+// //////////////////////////////////////////////////////////////////////////////////////////
+
+//    private LocalDateTime registrationDate;
+//
+//    private LocalDateTime createdOn;
+//
+//    private LocalDateTime updatedOn;
+
+//    @Schema(description = "Фамилия пользователя")
+//    private String lastName;
 }

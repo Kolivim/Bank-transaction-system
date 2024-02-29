@@ -36,3 +36,8 @@ replay_pid*
 /impl/logs/
 /logs/
 /.idea/
+
+/impl/target
+/domain/target
+/db/target
+/api/target

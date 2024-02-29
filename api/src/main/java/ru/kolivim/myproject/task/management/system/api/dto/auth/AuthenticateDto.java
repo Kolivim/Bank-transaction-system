@@ -12,8 +12,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthenticateDto{
 
-    @Schema(description = "email пользователя")
-    private String email;
-    @Schema(description = "пароль пользователя")
+//    @Schema(description = "email пользователя")
+//    private String email;
+
+    @Schema(description = "Логин пользователя")
+    private String login;
+    @Schema(description = "Пароль пользователя")
     private String password;
 }
