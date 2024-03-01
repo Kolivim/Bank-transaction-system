@@ -14,7 +14,7 @@ import ru.kolivim.myproject.task.management.system.domain.user.User;
 public class Account extends User {
 
     @Column(name="balance")
-    private Integer balance;
+    private Long balance;
 
 //    @Column(name="phone")
 //    private String phone;

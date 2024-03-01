@@ -1,6 +1,7 @@
 package ru.kolivim.myproject.task.management.system.impl.resource.auth;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,7 @@ import ru.kolivim.myproject.task.management.system.impl.service.passRecovery.Rec
 import ru.kolivim.myproject.task.management.system.impl.service.auth.AuthService;
 import ru.kolivim.myproject.task.management.system.impl.service.auth.CaptchaService;
 
+@Slf4j
 @Controller
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -22,6 +24,9 @@ public class AuthControllerImpl implements AuthController {
     @Override
     public ResponseEntity<AuthenticateResponseDto> login(AuthenticateDto authenticateDto) {
         System.out.println("login");
+//        log.info("NotificationService: create(NotificationDTO notificationDTO) startMethod, notificationDTO: {}",
+//                notificationDTO);
+
         AuthenticateResponseDto authenticateResponseDto = authService.login(authenticateDto);
         if(authenticateResponseDto.getAccessToken()==null){
             return ResponseEntity.status(400).build();
@@ -31,13 +36,21 @@ public class AuthControllerImpl implements AuthController {
 
     @Override
     public ResponseEntity<String> register(RegistrationDto registrationDto) {
+        log.info("AuthControllerImpl: register(RegistrationDto registrationDto), registrationDto: {}",
+                registrationDto);
+
+        /** Отключил проверку капчи */
+        /*
         if(!captchaService.captchaIsCorrect(registrationDto.getCaptchaCode(),registrationDto.getCaptchaSecret())){
             return ResponseEntity.badRequest().body("wrong captcha code");
         }
+        */
+
         if(!authService.register(registrationDto)){
-            return ResponseEntity.badRequest().body("email taken");
+            return ResponseEntity.badRequest().body("base has some user data");
         }
-        System.out.println("registered");
+
+        log.info("AuthControllerImpl: register(RegistrationDto registrationDto) endMethod : registered");
         return ResponseEntity.ok("registered");
     }
 

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -12,14 +13,22 @@ import ru.kolivim.myproject.task.management.system.api.dto.account.AccountDto;
 import ru.kolivim.myproject.task.management.system.api.dto.account.AccountSearchDto;
 import ru.kolivim.myproject.task.management.system.api.dto.auth.AuthenticateDto;
 import ru.kolivim.myproject.task.management.system.api.dto.auth.JwtDto;
+import ru.kolivim.myproject.task.management.system.api.dto.auth.RegistrationDto;
+import ru.kolivim.myproject.task.management.system.api.dto.user.UserDto;
 import ru.kolivim.myproject.task.management.system.domain.account.Account;
 import ru.kolivim.myproject.task.management.system.domain.role.Role;
 import ru.kolivim.myproject.task.management.system.domain.user.User;
+import ru.kolivim.myproject.task.management.system.domain.user.User_;
 import ru.kolivim.myproject.task.management.system.impl.mapper.account.MapperAccount;
+import ru.kolivim.myproject.task.management.system.impl.mapper.account.MapperAuthenticate;
+import ru.kolivim.myproject.task.management.system.impl.repository.user.EmailRepository;
+import ru.kolivim.myproject.task.management.system.impl.repository.user.PhoneRepository;
 import ru.kolivim.myproject.task.management.system.impl.repository.user.UserRepository;
 import ru.kolivim.myproject.task.management.system.impl.service.role.RoleService;
 import ru.kolivim.myproject.task.management.system.impl.utils.auth.AuthUtil;
 import ru.kolivim.myproject.task.management.system.impl.repository.account.AccountRepository;
+import ru.kolivim.myproject.task.management.system.api.dto.search.BaseSearchDto;
+import ru.kolivim.myproject.task.management.system.impl.utils.specification.SpecificationUtils;
 
 import javax.security.auth.login.AccountException;
 import java.time.LocalDateTime;
@@ -30,12 +39,73 @@ import java.util.*;
 @Transactional
 @RequiredArgsConstructor
 public class UserService {
-    private static final String BADREUQEST = "bad reqest";
-    private final MapperAccount mapperAccount;
-    private final AccountRepository accountRepository;
-    private final UserRepository userRepository;
 
+    private final UserRepository userRepository;
+    private final PhoneRepository phoneRepository;
+    private final EmailRepository emailRepository;
+    private final MapperAuthenticate mapperAuthenticate;
+    private final MapperAccount mapperAccount;
+
+    /** Исходник: */
+    private static final String BADREUQEST = "bad reqest";
+    private final AccountRepository accountRepository;
     private final RoleService roleService;
+
+    /** Ниже начало методов: */
+
+    /** Определиться - стоит ли сделать метод синхронизированным? Посмотреть к с друзьями сделали синхронизацию в SN!!! */
+    public Boolean doesUserDataExist(RegistrationDto registrationDto) {
+        log.info("UserService: doesUserDataExist(RegistrationDto registrationDto) startMethod, RegistrationDto: {}",
+                registrationDto);
+
+        /*
+        Specification userSpecification = SpecificationUtils.getBaseSpecification(getBaseSearchDto())
+                .and(SpecificationUtils.in(User_.LOGIN, registrationDto.getLogin()));
+        List<User> users = userRepository.findAll(userSpecification);
+        */
+
+        Optional<User> user = userRepository.findByLoginAndIsDeletedFalse(registrationDto.getLogin());
+        int countPhone = phoneRepository.countByPhone(registrationDto.getPhone());
+        int countEmail = emailRepository.countByEmail(registrationDto.getEmail());
+
+        log.info("UserService: doesUserDataExist(*) received countPhone: {}, countEmail: {}, " +
+                        "Optional<User> :{}", countPhone, countEmail, user);
+
+        return !user.isEmpty() || countPhone !=0 || countEmail != 0;
+
+        /** Исходник: */
+        /*
+        return accountRepository.findFirstByEmail(email).isPresent();
+        */
+        //return null;
+
+    }
+
+    private BaseSearchDto getBaseSearchDto(){
+        BaseSearchDto baseSearchDto = new BaseSearchDto();
+        baseSearchDto.setIsDeleted(false);
+        return  baseSearchDto;
+    }
+
+
+    public UserDto create(RegistrationDto registrationDto) throws AccountException {
+        log.info("UserService:create(RegistrationDto registrationDto) startMethod, RegistrationDto: {}",
+                registrationDto);
+
+
+        Account account = accountRepository.save(mapperAccount.toAccount(registrationDto));
+        return mapperAuthenticate.toUserDTO(account);
+
+        /*
+        Account account = mapperAccount.toEntity(accountDto);
+        account.setRegistrationDate(LocalDateTime.now(ZoneId.of("Z")));
+        account.setRoles(roleService.getRoleSet(Arrays.asList("USER", "MODERATOR")));
+        account = accountRepository.save(account);
+        return mapperAccount.toDto(account);
+        */
+    }
+
+    /** Ниже остались в исходном виде: */
 
     public AccountDto create(AccountDto accountDto) throws AccountException {
         log.info("AccountService:create() startMethod");

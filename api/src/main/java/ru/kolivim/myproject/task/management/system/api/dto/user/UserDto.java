@@ -1,6 +1,7 @@
 package ru.kolivim.myproject.task.management.system.api.dto.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import ru.kolivim.myproject.task.management.system.api.dto.base.BaseDto;
@@ -10,8 +11,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@Getter
-@Setter
+@Data
 public class UserDto extends BaseDto {
 
     @Schema(description = "Идентификатор пользователя")

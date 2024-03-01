@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.envers.NotAudited;
+import ru.kolivim.myproject.task.management.system.domain.base.BaseEntity;
 import ru.kolivim.myproject.task.management.system.domain.base.audit.BaseAuditedEntity;
 import ru.kolivim.myproject.task.management.system.domain.role.Role;
 
@@ -25,17 +26,23 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User extends BaseAuditedEntity {
+public class User extends BaseEntity /*BaseAuditedEntity*/ {
 
+    /** Достаем селектом из таблицы Phone*/
+    /*
     @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "phone", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "phone", nullable = false)
-    private List<String> phoneList;  /** Достаем селектом из таблицы Phone*/
+    private List<String> phoneList;
+    */
 
+    /** Достаем селектом из таблицы Email*/
+    /*
     @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "email", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "email", nullable = false)
-    private List<String> emailList;  /** Достаем селектом из таблицы Email*/
+    private List<String> emailList;
+    */
 
     @Column(name="birth_date")
     ZonedDateTime birthDate;
@@ -56,7 +63,9 @@ public class User extends BaseAuditedEntity {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
     /*
-
+    @NotNull
+    @Email
+    @Size(max = 100)
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
