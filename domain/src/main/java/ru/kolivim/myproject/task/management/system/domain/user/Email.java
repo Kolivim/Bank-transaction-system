@@ -6,10 +6,9 @@ import ru.kolivim.myproject.task.management.system.domain.base.BaseEntity;
 
 import java.util.UUID;
 
-
+@Entity
 @Getter
 @Setter
-@Entity
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor

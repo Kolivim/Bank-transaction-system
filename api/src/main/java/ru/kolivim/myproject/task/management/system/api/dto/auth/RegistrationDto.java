@@ -13,6 +13,12 @@ import java.util.UUID;
 @AllArgsConstructor
 public class RegistrationDto extends BaseDto {
 
+    @Schema(description = "Дата рождения пользователя")
+    ZonedDateTime birthDate;
+
+    @Schema(description = "ФИО пользователя")
+    private String fullName;
+
     @Schema(description = "Логин")
     private String login;                                        /** Проверить что свободен */
 
@@ -28,7 +34,7 @@ public class RegistrationDto extends BaseDto {
 
 
     @Schema(description = "Изначальная сумма на счете")
-    private Long balance;
+    private Double balance;
 
 
 

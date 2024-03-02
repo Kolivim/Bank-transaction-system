@@ -20,12 +20,23 @@ import java.util.UUID;
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public abstract class MapperAccount {
 
+    public Account toAccount(RegistrationDto registrationDto, Double maxBalance) {
+        log.info("MapperAccount:toAccount(RegistrationDto registrationDto, Float maxBalance) startMethod, " +
+                "RegistrationDto: {}, maxBalance: {}", registrationDto, maxBalance);
+        Account account = toAccount(registrationDto);
+        account.setMaxBalance(maxBalance);
+        log.info("MapperAccount:toAccount(*) endMethod, Account: {}", account);
+        return account;
+    }
+
     public Account toAccount(RegistrationDto registrationDto) {
         log.info("MapperAccount:toAccount(RegistrationDto registrationDto) startMethod, RegistrationDto: {}",
                 registrationDto);
         Account account = new Account();
         account.setIsDeleted(false);
         account.setBalance(registrationDto.getBalance());
+        account.setBirthDate(registrationDto.getBirthDate());
+        account.setFullName(registrationDto.getFullName());
         account.setLogin(registrationDto.getLogin());
         account.setPassword(registrationDto.getPassword());
 //        ArrayList<String> phoneList = new ArrayList<>();

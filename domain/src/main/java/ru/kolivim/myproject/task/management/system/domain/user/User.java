@@ -2,10 +2,7 @@ package ru.kolivim.myproject.task.management.system.domain.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.envers.NotAudited;
 import ru.kolivim.myproject.task.management.system.domain.base.BaseEntity;
 import ru.kolivim.myproject.task.management.system.domain.base.audit.BaseAuditedEntity;
@@ -22,6 +19,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")

@@ -20,6 +20,7 @@ import ru.kolivim.myproject.task.management.system.impl.mapper.user.PhoneMapper;
 import ru.kolivim.myproject.task.management.system.impl.repository.account.AccountRepository;
 import ru.kolivim.myproject.task.management.system.impl.repository.user.EmailRepository;
 import ru.kolivim.myproject.task.management.system.impl.repository.user.PhoneRepository;
+import ru.kolivim.myproject.task.management.system.impl.service.account.AccountService;
 import ru.kolivim.myproject.task.management.system.impl.service.user.UserService;
 import ru.kolivim.myproject.task.management.system.impl.security.jwt.TokenGenerator;
 
@@ -30,6 +31,7 @@ import javax.security.auth.login.AccountException;
 @RequiredArgsConstructor
 public class AuthService {
     private final UserService userServices;
+    private final AccountService accountService;
 
     private final AccountRepository accountRepository;
     private final PhoneRepository phoneRepository;
@@ -61,6 +63,34 @@ public class AuthService {
             return false;
         }
 
+//        accountService.create(registrationDto);
+//        log.info("AuthService: register(*) endMethod");
+
+        return accountService.create(registrationDto);
+
+        /** В SN еще допом было: */
+        /*
+        AccountDto accountDto = mapperAccount.accountDtoFromRegistrationDto(registrationDto);
+        try {
+            userServices.create(accountDto);
+        } catch (AccountException e) {
+            throw new RuntimeException(e);
+        }
+        */
+    }
+
+
+    @Deprecated
+    public Boolean registerOld(RegistrationDto registrationDto) {
+        log.info("AuthService: register(RegistrationDto registrationDto), registrationDto: {}",
+                registrationDto);
+
+        if(userServices.doesUserDataExist(registrationDto)){
+            log.info("AuthService: register(*), user data is available in the database, registrationDto: {}",
+                    registrationDto);
+            return false;
+        }
+
 //        Account account = mapperAuthenticate.toAccount(registrationDto);
         Account account = accountRepository.save(mapperAccount.toAccount(registrationDto));
         Phone phone = phoneRepository.save(phoneMapper.toPhone(registrationDto, account.getId()));
@@ -83,20 +113,5 @@ public class AuthService {
         }
         */
     }
-        /*
-        if(userServices.doesAccountWithSuchEmailExist(registrationDto.getEmail())){
-            return false;
-        }
-        AccountDto accountDto = mapperAccount.accountDtoFromRegistrationDto(registrationDto);
-
-        try {
-            userServices.create(accountDto);
-        } catch (AccountException e) {
-            throw new RuntimeException(e);
-        }
-
-        return true;
-    }
-    */
 
 }

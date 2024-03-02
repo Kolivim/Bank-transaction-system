@@ -1,6 +1,7 @@
 package ru.kolivim.myproject.task.management.system.api.dto.account;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
 import lombok.Data;
 import ru.kolivim.myproject.task.management.system.api.dto.base.BaseDto;
 
@@ -10,7 +11,10 @@ import java.time.LocalDateTime;
 public class AccountDto extends BaseDto {
 
     @Schema(description = "Сумма на счете")
-    private Long balance;
+    private Double balance;
+
+    @Schema(description = "Максимальная сумма, для начисления процентов")
+    private Double maxBalance;
 
     //////////////////////////////////////////////////////////////////////////////////////////
 

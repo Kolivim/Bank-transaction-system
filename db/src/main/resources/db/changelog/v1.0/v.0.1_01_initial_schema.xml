@@ -85,7 +85,6 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="is_deleted" type="boolean"/>
-<!--            <column name="email" type="varchar(255)"/>-->
             <column name="birth_date" type="timestamp(6) with time zone"/>
             <column name="full_name" type="varchar(255)"/>
             <column name="login" type="varchar(255)"/>
@@ -103,10 +102,8 @@
             <column name="id" type="uuid">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="balance" type="bigserial"/>
-<!--
-            <column name="phone" type="varchar(255)"/>
--->
+            <column name="balance" type="DOUBLE PRECISION"/>
+            <column name="max_balance" type="DOUBLE PRECISION"/>
         </createTable>
     </changeSet>
 
