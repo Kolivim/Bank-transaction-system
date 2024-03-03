@@ -38,7 +38,6 @@ public class AuthService {
     private final EmailRepository emailRepository;
 
     private final MapperAccount mapperAccount;
-    private final MapperAuthenticate mapperAuthenticate;
     private final PhoneMapper phoneMapper;
     private final EmailMapper emailMapper;
 
@@ -65,50 +64,6 @@ public class AuthService {
 
         return accountService.create(registrationDto);
 
-        /** В SN еще допом было: */
-        /*
-        AccountDto accountDto = mapperAccount.accountDtoFromRegistrationDto(registrationDto);
-        try {
-            userServices.create(accountDto);
-        } catch (AccountException e) {
-            throw new RuntimeException(e);
-        }
-        */
-    }
-
-
-    @Deprecated
-    public Boolean registerOld(RegistrationDto registrationDto) {
-        log.info("AuthService: register(RegistrationDto registrationDto), registrationDto: {}",
-                registrationDto);
-
-        if(userServices.doesUserDataExist(registrationDto)){
-            log.info("AuthService: register(*), user data is available in the database, registrationDto: {}",
-                    registrationDto);
-            return false;
-        }
-
-//        Account account = mapperAuthenticate.toAccount(registrationDto);
-        Account account = accountRepository.save(mapperAccount.toAccount(registrationDto));
-        Phone phone = phoneRepository.save(phoneMapper.toPhone(registrationDto, account.getId()));
-        Email email = emailRepository.save(emailMapper.toEmail(registrationDto, account.getId()));
-
-        log.info("AuthService: register(*) endMethod, Account: {}, Phone: {}, Email: {}",
-                account, phone, email);
-        return true;
-
-        /* закомментил чтобы ошибка не светилась,
-        исходник: AccountDto accountDto = mapperAccount.accountDtoFromRegistrationDto(registrationDto);*/
-
-//        UserDto userDto = new UserDto();
-
-        /*
-        try {
-            userServices.create(accountDto);
-        } catch (AccountException e) {
-            throw new RuntimeException(e);
-        }
-        */
     }
 
 }

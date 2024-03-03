@@ -20,7 +20,7 @@ import ru.kolivim.myproject.task.management.system.api.dto.auth.*;
 public interface AuthController {
 
     @Operation(summary = "Аутентификация",
-            description = "Вход в систему и последующее получение активных access и refresh токенов")
+            description = "Вход в систему и последующее получение активного access токена")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -56,90 +56,5 @@ public interface AuthController {
     })
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegistrationDto loginDto);
-
-    @Operation(summary = "Выход из системы",
-            description = "Выход из системы и удаление токенов из списка активных, " +
-                    "для текущего авторизованного пользователя")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Выход из системы успешно выполнен")
-    })
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout();
-
-
-    @Operation(summary = "Восстановление пароля (через e-mail)",
-            description = "Запрос на отправку письма на e-mail со ссылкой на страницу восстановление пароля")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Письмо на почту отправлено"),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Нет пользователя с указанной почтой")
-    })
-    @PostMapping("/password/recovery/")
-    public ResponseEntity<String> sendRecoveryEmail(@RequestBody PasswordRecoveryDto recoveryDto);
-
-
-    @Operation(summary = "Восстановление пароля",
-            description = "Восстановление пароля по ссылке из почты. В качестве ссылки направлялся id токена " +
-                    "восстановления, который добавлен в базу при отправке сообщения на e-mail")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Пароль успешно изменён"),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Неверная или просроченная ссылка")
-    })
-    @PostMapping("/password/recovery/{linkId}")
-    public ResponseEntity<String> changePassword(
-            @Parameter(description = "id токена восстановления в БД") @PathVariable String linkId,
-            @RequestBody NewPasswordDto passwordDto);
-
-
-    @GetMapping("/captcha")
-    public ResponseEntity<CaptchaDto> getCaptcha();
-
-
-    /*
-    @Operation(summary = "Изменение пароля",
-            description = "Изменение пароля существующего активного пользователя")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Пароль успешно изменён",
-                    content = {
-                            @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = AccountDto.class))
-                    }),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Введённые пароли не совпадают",
-                    content = {
-                            @Content(schema = @Schema(implementation = void.class))
-                    })
-    })
-    @PostMapping("/change-password-link")
-    ResponseEntity<AccountDto> changePasswordLink(@RequestBody PasswordChangeDto newAggregateEmailDto);
-
-    @Operation(summary = "Изменение почты",
-            description = "Изменение почты существующего активного пользователя")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Почта успешно изменена",
-                    content = {
-                            @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = AccountDto.class))
-                    })
-    })
-    @PostMapping("/change-email-link")
-    ResponseEntity<AccountDto> changeEmailLink(@RequestBody ChangeEmailDto newAggregateEmailDto);
-    */
 
 }

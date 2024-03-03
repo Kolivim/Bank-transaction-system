@@ -11,7 +11,6 @@ public class JwtMapper {
         return JwtDto.builder()
                 .id(UUID.fromString(jwt.getClaim("user_id")))
                 .login(jwt.getSubject())
-//                .roles(jwt.getClaim("roles"))
                 .build();
     }
 }

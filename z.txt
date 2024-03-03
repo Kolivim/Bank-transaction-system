@@ -29,7 +29,7 @@
 Функциональные требования:
 1.	+ В системе есть пользователи, у каждого пользователя есть строго один “банковский аккаунт”.
     + У пользователя также есть телефон и email.
-    +/- Телефон и или email должен быть минимум один.
+    +/+ Телефон и или email должен быть минимум один.
     На “банковском счету” должна быть какая-то изначальная сумма.
     + Также у пользователя должна быть указана дата рождения и ФИО.
 2.	+ Для простоты будем считать что в системе нет ролей, только обычные клиенты.
@@ -50,7 +50,7 @@
  + Было: 100, стало: 105.
  + Было: 105, стало:110.25.
 
-10.	Реализовать функционал перевода денег с одного счета на другой.
+10.	+ Реализовать функционал перевода денег с одного счета на другой.
     Со счета аутентифицированного пользователя, на счёт другого пользователя.
     Сделать все необходимые валидации и потокобезопасной.
 
@@ -58,7 +58,7 @@
 1.	+/-- Добавить OpenAPI/Swagger
 2.	+ Добавить логирование
 3.	+ Аутентификация через JWT.
-4.	Нужно сделать тесты на покрытие функционала трансфера денег.
+4.	+ Нужно сделать тесты на покрытие функционала трансфера денег.
 
 Стек:
 1.	Java 17
@@ -76,6 +76,7 @@
 Запросы:
 
 ###
+
 POST http://localhost:8080/api/v1/auth/register
 Content-Type: application/json
 
@@ -89,6 +90,252 @@ Content-Type: application/json
     "balance": 111.1
 
 }
+
+###
+
+POST http://localhost:8080/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "birthDate": "1987-01-01T11:11:11Z",
+  "fullName": "Борис Иванович Иванов",
+  "login": "two2",
+  "password": "passw",
+  "phone": "89998887758",
+  "email": "zzzz@zzzz.ru",
+  "balance": 1141.5
+
+}
+
+###
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+
+  "login": "two2",
+  "password": "passw"
+
+}
+
+<> 2024-03-03T200226.200.json
+<> 2024-03-03T154743.200.json
+<> 2024-03-03T124521.200.json
+<> 2024-03-03T120318.200.json
+<> 2024-03-03T011056.200.json
+
+###
+POST http://localhost:8080/api/v1/user/phone
+Cookie: jwt=eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ0cmFuc2FjdGlvbnMiLCJzdWIiOiJ0d28yIiwiZXhwIjoxNzA5NDg1Mzk4LCJ1c2VyX2lkIjoiNDhkYWY4MzctYmY4OS00NjBkLWFhNzMtNWQxYTZlZGU2YzgwIiwiaWF0IjoxNzA5NDU2NTk4fQ.b87sEbsjUBFgaivlsycdlzZe9KyqaPwxf38IpqsNLc2txxF_YYwg_wOB30f3U2t4qTzMNX-3akDJd_A8h2Hw5Gq6sPZ5k49x5o1bZdxbAGk8AN0_75A_1iNn6nbWICVpOy9qf6OOnSbqrBQVFyKWAN_mgNZ9bZrp5s6zQCswrJ4eOKJL42Ur-1nsEl5aSWgUtbIeKTnjFV3stHyHHBUjNjY1KKbAmPvKSrrUPbeABHhZFbAX4C1kWHPfkz-urn83EBOaxC26nBSsrtMfs8x-6sctOvmoYEhOu0jF1Fb9A19LBTt_0Ga__HpCha8np4YWtrunsaDRaG1yEo-bW8SG_g;
+Content-Type: application/json
+
+{
+  "phone": "89102223344"
+}
+
+###
+
+POST http://localhost:8080/api/v1/user/email
+Cookie: jwt=eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ0cmFuc2FjdGlvbnMiLCJzdWIiOiJ0d28yIiwiZXhwIjoxNzA5NDg1Mzk4LCJ1c2VyX2lkIjoiNDhkYWY4MzctYmY4OS00NjBkLWFhNzMtNWQxYTZlZGU2YzgwIiwiaWF0IjoxNzA5NDU2NTk4fQ.b87sEbsjUBFgaivlsycdlzZe9KyqaPwxf38IpqsNLc2txxF_YYwg_wOB30f3U2t4qTzMNX-3akDJd_A8h2Hw5Gq6sPZ5k49x5o1bZdxbAGk8AN0_75A_1iNn6nbWICVpOy9qf6OOnSbqrBQVFyKWAN_mgNZ9bZrp5s6zQCswrJ4eOKJL42Ur-1nsEl5aSWgUtbIeKTnjFV3stHyHHBUjNjY1KKbAmPvKSrrUPbeABHhZFbAX4C1kWHPfkz-urn83EBOaxC26nBSsrtMfs8x-6sctOvmoYEhOu0jF1Fb9A19LBTt_0Ga__HpCha8np4YWtrunsaDRaG1yEo-bW8SG_g;
+Content-Type: application/json
+
+{
+  "email": "xx@xx.ru"
+}
+
+
+<> 2024-03-03T120447.200.txt
+<> 2024-03-03T120431.404.json
+###
+PUT http://localhost:8080/api/v1/user/phone
+Cookie: jwt=eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ0cmFuc2FjdGlvbnMiLCJzdWIiOiJ0d28yIiwiZXhwIjoxNzA5NDg3OTIxLCJ1c2VyX2lkIjoiNDhkYWY4MzctYmY4OS00NjBkLWFhNzMtNWQxYTZlZGU2YzgwIiwiaWF0IjoxNzA5NDU5MTIxfQ.aOQSucwJilZ_lbEWXeHslE-WKPUQj1FiPNvreO8dokv7aouRWWcEGj_K8VwDb84G6gkP-QhlYEVkmUWhVsA-QfFFoU8ECv2cctV0SV94Tr79Ch3XCapyr931JVZfYY5M8ridUNHXX3hTe5lCi2BT8p9ngEsBW0GbhY74qhLa00E6-s73m14Wr4wh9-7rU13d0XDSy9qD7nQ6S-BIUtGi8RrIaA8agOAs6dI_0t4HFD943h2i5Nxr_HxrDJ46dvugrYqQ0pNK6upkChlMXzQgpPWrj_z54_5D1YgIyRPZhII84EHbGuJiLJPiRZ12pusw30n7Im-lwU-Y_2uCOwjIsA;
+Content-Type: application/json
+
+{
+  "phone": "89102223377",
+  "newPhone": "89102223399"
+}
+
+<> 2024-03-03T125238.200.txt
+<> 2024-03-03T124628.200.txt
+###
+PUT http://localhost:8080/api/v1/user/email
+Cookie: jwt=eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ0cmFuc2FjdGlvbnMiLCJzdWIiOiJ0d28yIiwiZXhwIjoxNzA5NDg3OTIxLCJ1c2VyX2lkIjoiNDhkYWY4MzctYmY4OS00NjBkLWFhNzMtNWQxYTZlZGU2YzgwIiwiaWF0IjoxNzA5NDU5MTIxfQ.aOQSucwJilZ_lbEWXeHslE-WKPUQj1FiPNvreO8dokv7aouRWWcEGj_K8VwDb84G6gkP-QhlYEVkmUWhVsA-QfFFoU8ECv2cctV0SV94Tr79Ch3XCapyr931JVZfYY5M8ridUNHXX3hTe5lCi2BT8p9ngEsBW0GbhY74qhLa00E6-s73m14Wr4wh9-7rU13d0XDSy9qD7nQ6S-BIUtGi8RrIaA8agOAs6dI_0t4HFD943h2i5Nxr_HxrDJ46dvugrYqQ0pNK6upkChlMXzQgpPWrj_z54_5D1YgIyRPZhII84EHbGuJiLJPiRZ12pusw30n7Im-lwU-Y_2uCOwjIsA;
+Content-Type: application/json
+
+{
+  "email": "zzzz@zzzz.ru",
+  "newEmail": "qq@qq.ru"
+}
+
+<> 2024-03-03T131807.200.txt
+<> 2024-03-03T131742.200.txt
+<> 2024-03-03T131614.200.txt
+<> 2024-03-03T131446.200.txt
+
+###
+DELETE http://localhost:8080/api/v1/user/email
+Cookie: jwt=eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ0cmFuc2FjdGlvbnMiLCJzdWIiOiJ0d28yIiwiZXhwIjoxNzA5NDk4ODYzLCJ1c2VyX2lkIjoiNDhkYWY4MzctYmY4OS00NjBkLWFhNzMtNWQxYTZlZGU2YzgwIiwiaWF0IjoxNzA5NDcwMDYzfQ.nHu0v3kgqHK9wmDbXj6kPs0ghLDeMsRRMoOPKmCQ-MRw748mNZFKUZK0brpALLorIkGfD36IRs6mjjsGh-Rutcz_Ac2JTPsQ--xrs4Xwe3I2lVzGnW-qQes7LHnXTg7__YbLdffUUz1hmL2cqJqK6Nxw7IihRPGnWAI6_C4dkma5hERyHg2bF5-vIk5kVGjmhZrjpi_HUSGmuoloYYTPKURRZbL3pHjd0XNEaXUxdWe1ZSDDn7L07WwYHfPqjthTMBnxTqMonYtOaulb7nsp3w5P0nd9cphoUvhhcHmh17X59Q2huyDrFDVRqq3COmDgUHZwmargYF71XHDpwplR9A;
+Content-Type: application/json
+
+{
+  "email": "qq@qq.ru"
+}
+
+<> 2024-03-03T161029.200.txt
+<> 2024-03-03T154829.400.json
+<> 2024-03-03T134839.400.json
+
+
+###
+DELETE http://localhost:8080/api/v1/user/phone
+Cookie: jwt=eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ0cmFuc2FjdGlvbnMiLCJzdWIiOiJ0d28yIiwiZXhwIjoxNzA5NDk4ODYzLCJ1c2VyX2lkIjoiNDhkYWY4MzctYmY4OS00NjBkLWFhNzMtNWQxYTZlZGU2YzgwIiwiaWF0IjoxNzA5NDcwMDYzfQ.nHu0v3kgqHK9wmDbXj6kPs0ghLDeMsRRMoOPKmCQ-MRw748mNZFKUZK0brpALLorIkGfD36IRs6mjjsGh-Rutcz_Ac2JTPsQ--xrs4Xwe3I2lVzGnW-qQes7LHnXTg7__YbLdffUUz1hmL2cqJqK6Nxw7IihRPGnWAI6_C4dkma5hERyHg2bF5-vIk5kVGjmhZrjpi_HUSGmuoloYYTPKURRZbL3pHjd0XNEaXUxdWe1ZSDDn7L07WwYHfPqjthTMBnxTqMonYtOaulb7nsp3w5P0nd9cphoUvhhcHmh17X59Q2huyDrFDVRqq3COmDgUHZwmargYF71XHDpwplR9A;
+Content-Type: application/json
+
+{
+  "phone": "89102223344"
+}
+
+<> 2024-03-03T155419.200.txt
+<> 2024-03-03T155352.200.txt
+
+
+
+###
+POST http://localhost:8080/api/v1/user/search/fullname?page=0&sort=id,desc
+Cookie: jwt=eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ0cmFuc2FjdGlvbnMiLCJzdWIiOiJ0d28yIiwiZXhwIjoxNzA5NTE0MTQ2LCJ1c2VyX2lkIjoiNDhkYWY4MzctYmY4OS00NjBkLWFhNzMtNWQxYTZlZGU2YzgwIiwiaWF0IjoxNzA5NDg1MzQ2fQ.lX21nMNIwiIJuVMzmbhi357I48GHBV95py-N6_FgUTz-iH6_SheoSln7Af-6Plna4yj-2abTqoPZBYfEWdS0DmnXAMarY43kv8FtglIDA_DlTnCr95RKuoeGAgBPL0aqqWXcXI5zLIFnOn8F7vd2Qwba6tF1WwlzAeBOkhi-3zzCw7qapFF9o1bmTUIW_miZ4Cql3KsJkZtX5C6vxiyTIhW4b3xvRXVWlHxKIr0T6UejjWTSZeA3ymlOpvyDBVSCz8hZa08kH9RX2JlCJT-SSGWBhZlT7w8h-yBn85KArjjGzB3hsPeRDlX3LTh541NwCIAJOMGip-Xi4G_OvaCs8w;
+Content-Type: application/json
+
+{
+  "fullname": "Борис Иванович Петров"
+}
+
+<> 2024-03-03T204601.200.json
+<> 2024-03-03T204540.200.json
+<> 2024-03-03T204022.200.json
+<> 2024-03-03T203239.200.json
+<> 2024-03-03T203159.200.json
+<> 2024-03-03T203026.200.json
+<> 2024-03-03T201224.200.json
+<> 2024-03-03T200645.500.json
+<> 2024-03-03T200443.500.json
+<> 2024-03-03T200350.500.json
+<> 2024-03-03T200247.500.json
+<> 2024-03-03T200141.500.json
+<> 2024-03-03T195641.500.json
+<> 2024-03-03T193824.500.json
+<> 2024-03-03T193506.500.json
+
+###
+POST http://localhost:8080/api/v1/user/search/fullname?page=0&sort=id,desc
+Cookie: jwt=eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ0cmFuc2FjdGlvbnMiLCJzdWIiOiJ0d28yIiwiZXhwIjoxNzA5NTE0MTQ2LCJ1c2VyX2lkIjoiNDhkYWY4MzctYmY4OS00NjBkLWFhNzMtNWQxYTZlZGU2YzgwIiwiaWF0IjoxNzA5NDg1MzQ2fQ.lX21nMNIwiIJuVMzmbhi357I48GHBV95py-N6_FgUTz-iH6_SheoSln7Af-6Plna4yj-2abTqoPZBYfEWdS0DmnXAMarY43kv8FtglIDA_DlTnCr95RKuoeGAgBPL0aqqWXcXI5zLIFnOn8F7vd2Qwba6tF1WwlzAeBOkhi-3zzCw7qapFF9o1bmTUIW_miZ4Cql3KsJkZtX5C6vxiyTIhW4b3xvRXVWlHxKIr0T6UejjWTSZeA3ymlOpvyDBVSCz8hZa08kH9RX2JlCJT-SSGWBhZlT7w8h-yBn85KArjjGzB3hsPeRDlX3LTh541NwCIAJOMGip-Xi4G_OvaCs8w;
+Content-Type: application/json
+
+{
+  "fullname": "Борис Иванович Петров"
+}
+
+<> 2024-03-03T204601.200.json
+<> 2024-03-03T204540.200.json
+<> 2024-03-03T204022.200.json
+<> 2024-03-03T203239.200.json
+<> 2024-03-03T203159.200.json
+<> 2024-03-03T203026.200.json
+<> 2024-03-03T201224.200.json
+<> 2024-03-03T200645.500.json
+<> 2024-03-03T200443.500.json
+<> 2024-03-03T200350.500.json
+<> 2024-03-03T200247.500.json
+<> 2024-03-03T200141.500.json
+<> 2024-03-03T195641.500.json
+<> 2024-03-03T193824.500.json
+<> 2024-03-03T193506.500.json
+
+###
+
+POST http://localhost:8080/api/v1/user/search/fullname?page=0&sort=id,desc
+Cookie: jwt=eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ0cmFuc2FjdGlvbnMiLCJzdWIiOiJ0d28yIiwiZXhwIjoxNzA5NTE0MTQ2LCJ1c2VyX2lkIjoiNDhkYWY4MzctYmY4OS00NjBkLWFhNzMtNWQxYTZlZGU2YzgwIiwiaWF0IjoxNzA5NDg1MzQ2fQ.lX21nMNIwiIJuVMzmbhi357I48GHBV95py-N6_FgUTz-iH6_SheoSln7Af-6Plna4yj-2abTqoPZBYfEWdS0DmnXAMarY43kv8FtglIDA_DlTnCr95RKuoeGAgBPL0aqqWXcXI5zLIFnOn8F7vd2Qwba6tF1WwlzAeBOkhi-3zzCw7qapFF9o1bmTUIW_miZ4Cql3KsJkZtX5C6vxiyTIhW4b3xvRXVWlHxKIr0T6UejjWTSZeA3ymlOpvyDBVSCz8hZa08kH9RX2JlCJT-SSGWBhZlT7w8h-yBn85KArjjGzB3hsPeRDlX3LTh541NwCIAJOMGip-Xi4G_OvaCs8w;
+Content-Type: application/json
+
+{
+  "fullname": "Борис Иванович Петров"
+}
+
+<> 2024-03-03T204601.200.json
+<> 2024-03-03T204540.200.json
+<> 2024-03-03T204022.200.json
+<> 2024-03-03T203239.200.json
+<> 2024-03-03T203159.200.json
+<> 2024-03-03T203026.200.json
+<> 2024-03-03T201224.200.json
+<> 2024-03-03T200645.500.json
+<> 2024-03-03T200443.500.json
+<> 2024-03-03T200350.500.json
+<> 2024-03-03T200247.500.json
+<> 2024-03-03T200141.500.json
+<> 2024-03-03T195641.500.json
+<> 2024-03-03T193824.500.json
+<> 2024-03-03T193506.500.json
+
+###
+POST http://localhost:8080/api/v1/user/search/birthday?page=0&sort=id,desc
+Cookie: jwt=eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ0cmFuc2FjdGlvbnMiLCJzdWIiOiJ0d28yIiwiZXhwIjoxNzA5NTE0MTQ2LCJ1c2VyX2lkIjoiNDhkYWY4MzctYmY4OS00NjBkLWFhNzMtNWQxYTZlZGU2YzgwIiwiaWF0IjoxNzA5NDg1MzQ2fQ.lX21nMNIwiIJuVMzmbhi357I48GHBV95py-N6_FgUTz-iH6_SheoSln7Af-6Plna4yj-2abTqoPZBYfEWdS0DmnXAMarY43kv8FtglIDA_DlTnCr95RKuoeGAgBPL0aqqWXcXI5zLIFnOn8F7vd2Qwba6tF1WwlzAeBOkhi-3zzCw7qapFF9o1bmTUIW_miZ4Cql3KsJkZtX5C6vxiyTIhW4b3xvRXVWlHxKIr0T6UejjWTSZeA3ymlOpvyDBVSCz8hZa08kH9RX2JlCJT-SSGWBhZlT7w8h-yBn85KArjjGzB3hsPeRDlX3LTh541NwCIAJOMGip-Xi4G_OvaCs8w;
+Content-Type: application/json
+
+{
+  "birthDate": "1984-01-01T11:11:11Z"
+}
+
+<> 2024-03-03T222644.200.json
+<> 2024-03-03T212913.200.json
+<> 2024-03-03T212818.200.json
+
+###
+POST http://localhost:8080/api/v1/user/search/phone?page=0&sort=id,desc
+Cookie: jwt=eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ0cmFuc2FjdGlvbnMiLCJzdWIiOiJ0d28yIiwiZXhwIjoxNzA5NTE0MTQ2LCJ1c2VyX2lkIjoiNDhkYWY4MzctYmY4OS00NjBkLWFhNzMtNWQxYTZlZGU2YzgwIiwiaWF0IjoxNzA5NDg1MzQ2fQ.lX21nMNIwiIJuVMzmbhi357I48GHBV95py-N6_FgUTz-iH6_SheoSln7Af-6Plna4yj-2abTqoPZBYfEWdS0DmnXAMarY43kv8FtglIDA_DlTnCr95RKuoeGAgBPL0aqqWXcXI5zLIFnOn8F7vd2Qwba6tF1WwlzAeBOkhi-3zzCw7qapFF9o1bmTUIW_miZ4Cql3KsJkZtX5C6vxiyTIhW4b3xvRXVWlHxKIr0T6UejjWTSZeA3ymlOpvyDBVSCz8hZa08kH9RX2JlCJT-SSGWBhZlT7w8h-yBn85KArjjGzB3hsPeRDlX3LTh541NwCIAJOMGip-Xi4G_OvaCs8w;
+Content-Type: application/json
+
+{
+  "phone": "89998887755"
+}
+
+<> 2024-03-03T222844.200.json
+<> 2024-03-03T222644.200.json
+<> 2024-03-03T212913.200.json
+<> 2024-03-03T212818.200.json
+
+###
+POST http://localhost:8080/api/v1/user/search/email?page=0&sort=id,desc
+Cookie: jwt=eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ0cmFuc2FjdGlvbnMiLCJzdWIiOiJ0d28yIiwiZXhwIjoxNzA5NTE0MTQ2LCJ1c2VyX2lkIjoiNDhkYWY4MzctYmY4OS00NjBkLWFhNzMtNWQxYTZlZGU2YzgwIiwiaWF0IjoxNzA5NDg1MzQ2fQ.lX21nMNIwiIJuVMzmbhi357I48GHBV95py-N6_FgUTz-iH6_SheoSln7Af-6Plna4yj-2abTqoPZBYfEWdS0DmnXAMarY43kv8FtglIDA_DlTnCr95RKuoeGAgBPL0aqqWXcXI5zLIFnOn8F7vd2Qwba6tF1WwlzAeBOkhi-3zzCw7qapFF9o1bmTUIW_miZ4Cql3KsJkZtX5C6vxiyTIhW4b3xvRXVWlHxKIr0T6UejjWTSZeA3ymlOpvyDBVSCz8hZa08kH9RX2JlCJT-SSGWBhZlT7w8h-yBn85KArjjGzB3hsPeRDlX3LTh541NwCIAJOMGip-Xi4G_OvaCs8w;
+Content-Type: application/json
+
+{
+  "email": "zz@zz.ru"
+}
+
+<> 2024-03-03T223938.200.json
+<> 2024-03-03T223923.200.json
+<> 2024-03-03T223915.500.json
+<> 2024-03-03T223906.200.json
+
+###
+
+POST http://localhost:8080/api/v1/user/pay
+Cookie: jwt=eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ0cmFuc2FjdGlvbnMiLCJzdWIiOiJ0d28yIiwiZXhwIjoxNzA5NTE0MTQ2LCJ1c2VyX2lkIjoiNDhkYWY4MzctYmY4OS00NjBkLWFhNzMtNWQxYTZlZGU2YzgwIiwiaWF0IjoxNzA5NDg1MzQ2fQ.lX21nMNIwiIJuVMzmbhi357I48GHBV95py-N6_FgUTz-iH6_SheoSln7Af-6Plna4yj-2abTqoPZBYfEWdS0DmnXAMarY43kv8FtglIDA_DlTnCr95RKuoeGAgBPL0aqqWXcXI5zLIFnOn8F7vd2Qwba6tF1WwlzAeBOkhi-3zzCw7qapFF9o1bmTUIW_miZ4Cql3KsJkZtX5C6vxiyTIhW4b3xvRXVWlHxKIr0T6UejjWTSZeA3ymlOpvyDBVSCz8hZa08kH9RX2JlCJT-SSGWBhZlT7w8h-yBn85KArjjGzB3hsPeRDlX3LTh541NwCIAJOMGip-Xi4G_OvaCs8w;
+Content-Type: application/json
+
+{
+  "login": "one",
+  "sum": 100
+}
+
+<> 2024-03-03T234833.200.json
+<> 2024-03-03T234732.200.json
+<> 2024-03-03T234717.200.json
+<> 2024-03-03T234652.200.json
+<> 2024-03-03T234612.200.json
+<> 2024-03-03T234503.500.json
+
 ###
 
 ..............................................................

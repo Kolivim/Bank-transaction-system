@@ -20,37 +20,20 @@ public class RegistrationDto extends BaseDto {
     private String fullName;
 
     @Schema(description = "Логин")
-    private String login;                                        /** Проверить что свободен */
+    private String login;
 
     @Schema(description = "Пароль")
     private String password;
 
     @Schema(description = "Номер телефона пользователя")
-    private String phone;                                        /** Проверить что свободен */
+    private String phone;
 
     @Schema(description = "Email пользователя")
-    private String email;                                        /** Проверить что свободен */
-
-
+    private String email;
 
     @Schema(description = "Изначальная сумма на счете")
     private Double balance;
 
-
-
-    /** Отключить в дальнейшем */
-
-    @Schema(description = "Имя пользователя")
-    private String firstName;
-    @Schema(description = "Фамилия пользователя")
-    private String lastName;
-    @Schema(description = "Пароль")
-    private String password1;
-    @Schema(description = "Повторение пароля")
-    private String password2;
-
-    private String captchaCode;
-    private String captchaSecret;
 }
 
 

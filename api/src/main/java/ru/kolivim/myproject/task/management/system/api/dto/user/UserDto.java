@@ -18,10 +18,10 @@ public class UserDto extends BaseDto {
     private boolean isDeleted;
 
     @Schema(description = "Номера телефонов / телефона")
-    private List<String> phoneList;                                              /** Достаем селектом из таблицы Phone*/
+    private List<String> phoneList;
 
     @Schema(description = "Список Email пользователя")
-    private List<String> emailList;                                              /** Достаем селектом из таблицы Email*/
+    private List<String> emailList;
 
     @Schema(description = "Дата рождения пользователя")
     ZonedDateTime birthDate;
@@ -35,18 +35,4 @@ public class UserDto extends BaseDto {
     @Schema(description = "Пароль")
     private String password;
 
-    /** Без него обойтись смогу*/
-//    @Schema(description = "Идентификатор банковского аккаунта")
-//    private UUID accountId;
-
-// //////////////////////////////////////////////////////////////////////////////////////////
-
-//    private LocalDateTime registrationDate;
-//
-//    private LocalDateTime createdOn;
-//
-//    private LocalDateTime updatedOn;
-
-//    @Schema(description = "Фамилия пользователя")
-//    private String lastName;
 }

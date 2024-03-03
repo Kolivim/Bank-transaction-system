@@ -13,7 +13,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "email")
-//@Embeddable
 public class Email extends BaseEntity{
 
     @Column(name = "email")
@@ -22,7 +21,4 @@ public class Email extends BaseEntity{
     @Column(name = "user_id")
     private UUID userId;
 
-
-//    @ManyToOne
-//    private User user;
 }

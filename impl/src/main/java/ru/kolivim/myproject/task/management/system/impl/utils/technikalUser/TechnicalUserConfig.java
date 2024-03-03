@@ -49,7 +49,6 @@ public class TechnicalUserConfig {
         JwtDto jwtDto = new JwtDto();
         jwtDto.setUserId(UUID.randomUUID().toString());
         jwtDto.setLogin("kafka@email");
-//        jwtDto.setRoles(Collections.singletonList("ROLES_KAFKA"));
         JwtAuthenticationToken jwtAuthenticationToken = new JwtAuthenticationToken(createToken(jwtDto));
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(jwtAuthenticationToken);
@@ -60,7 +59,6 @@ public class TechnicalUserConfig {
         JwtDto jwtDto = new JwtDto();
         jwtDto.setUserId("f7d1002-9cc6-11ee-8c90-0242ac120002");
         jwtDto.setLogin("test@email");
-//        jwtDto.setRoles(Collections.singletonList("ROLES_KAFKA"));
         JwtAuthenticationToken jwtAuthenticationToken = new JwtAuthenticationToken(createToken(jwtDto));
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(jwtAuthenticationToken);
@@ -74,7 +72,6 @@ public class TechnicalUserConfig {
                 .issuedAt(now)
                 .expiresAt(now.plus(8, ChronoUnit.HOURS))
                 .subject(jwtDto.getLogin())
-//                .claim("roles", jwtDto.getRoles())
                 .claim("user_id", jwtDto.getUserId())
                 .build();
         return accessTokenEncoder.encode(JwtEncoderParameters.from(claimsSet));

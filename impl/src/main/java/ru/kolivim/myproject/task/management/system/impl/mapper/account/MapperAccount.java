@@ -33,24 +33,8 @@ public abstract class MapperAccount {
         account.setFullname(registrationDto.getFullName());
         account.setLogin(registrationDto.getLogin());
         account.setPassword(registrationDto.getPassword());
-//        ArrayList<String> phoneList = new ArrayList<>();
-//        phoneList.add(registrationDto.getPhone());
-//        account.setPhoneList(phoneList);
-//        ArrayList<String> emailList = new ArrayList<>();
-//        emailList.add(registrationDto.getEmail());
-//        account.setEmailList(emailList);
         log.info("MapperAccount:toAccount(RegistrationDto registrationDto) endMethod, Account: {}", account);
         return account;
     }
 
-/*
-    public abstract AccountDto toDto(Account account);
-    public abstract Account toEntity(AccountDto accountDto);
-    public abstract Account rewriteEntity(@MappingTarget Account account, AccountDto accountDto);
-*/
-
-    /*
-    @Mapping(target = "password", source = "dto.password1")
-    public abstract AccountDto accountDtoFromRegistrationDto(RegistrationDto dto);
-    */
 }

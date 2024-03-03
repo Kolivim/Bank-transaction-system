@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -21,6 +20,5 @@ public class JwtDto {
     private String userId;
     @Schema(description = "Login пользователя")
     private String login;
-//    @Schema(description = "список ролей пользователя")
-//    private List<String> roles;
+
 }

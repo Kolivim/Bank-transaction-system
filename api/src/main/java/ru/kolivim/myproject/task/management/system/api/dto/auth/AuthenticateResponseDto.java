@@ -16,4 +16,5 @@ public class AuthenticateResponseDto {
     private String accessToken;
     @Schema(description = "refresh токен")
     private String refreshToken;
+
 }
