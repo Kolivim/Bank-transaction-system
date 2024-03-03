@@ -1,12 +1,16 @@
-package ru.kolivim.myproject.task.management.system.impl.resource.account;
+package ru.kolivim.myproject.task.management.system.impl.resource.user;
 
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kolivim.myproject.task.management.system.api.dto.account.AccountDto;
 import ru.kolivim.myproject.task.management.system.api.dto.auth.JwtDto;
+import ru.kolivim.myproject.task.management.system.api.dto.user.UserDataDTO;
+import ru.kolivim.myproject.task.management.system.api.dto.user.UserDto;
 import ru.kolivim.myproject.task.management.system.api.resource.user.UserResource;
 import ru.kolivim.myproject.task.management.system.impl.service.user.UserService;
 import ru.kolivim.myproject.task.management.system.impl.utils.auth.AuthUtil;
@@ -21,18 +25,75 @@ import java.util.UUID;
  */
 @Slf4j
 @RestController
-@RequestMapping("api/v1/account")
+//@RequestMapping("api/v1/user")
+//@RequestMapping("api/v1/account")
 @RequiredArgsConstructor
-public class AccountResourceImpl implements UserResource {
+public class UserResourceImpl implements UserResource {
 
-    private final UserService userServices;
+    private final UserService userService;
 
     @Override
-    @GetMapping()
+    public ResponseEntity addPhone(@RequestBody UserDataDTO userDataDTO) {
+        userService.addPhone(userDataDTO);
+        return ResponseEntity.ok("Номер добавлен");
+    }
+
+    @Override
+    public ResponseEntity  updatePhone(@RequestBody UserDataDTO userDataDTO) {
+        return ResponseEntity.ok(userService.updatePhone(userDataDTO));
+    }
+
+    @Override
+    public ResponseEntity deletePhone(@RequestBody UserDataDTO userDataDTO) {
+        return ResponseEntity.ok(userService.deletePhone(userDataDTO));
+    }
+
+    @Override
+    public ResponseEntity addEmail(@RequestBody UserDataDTO userDataDTO) {
+        userService.addEmail(userDataDTO);
+        return ResponseEntity.ok("Email добавлен");
+    }
+
+    @Override
+    public ResponseEntity  updateEmail(@RequestBody UserDataDTO userDataDTO) {
+        return ResponseEntity.ok(userService.updateEmail(userDataDTO));
+    }
+
+    @Override
+    public ResponseEntity deleteEmail(@RequestBody UserDataDTO userDataDTO) {
+        return ResponseEntity.ok(userService.deleteEmail(userDataDTO));
+    }
+
+    @Override
+    public ResponseEntity<Page<UserDto>> searchFullname(@RequestBody UserDto userDto, Pageable pageable) {
+        return ResponseEntity.ok(userService.searchFullname(userDto, pageable));
+    }
+
+    @Override
+    public ResponseEntity<Page<UserDto>> searchBirthDay(@RequestBody UserDto userDto, Pageable pageable) {
+        return ResponseEntity.ok(userService.searchBirthDay(userDto, pageable));
+    }
+
+    @Override
+    public ResponseEntity<UserDto> searchPhone(@RequestBody UserDataDTO userDataDTO) {
+        return ResponseEntity.ok(userService.searchPhone(userDataDTO));
+    }
+
+    @Override
+    public ResponseEntity<UserDto> searchEmail(@RequestBody UserDataDTO userDataDTO) {
+        return ResponseEntity.ok(userService.searchEmail(userDataDTO));
+    }
+
+
+
+    //////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    @GetMapping() /** Поубирать везде */
     public ResponseEntity get(@RequestParam String email) {
         log.info("AccountResourceImpl:get() startMethod");
         try {
-            return ResponseEntity.ok(userServices.getByEmail(email));
+            return ResponseEntity.ok(userService.getByEmail(email));
         } catch (AccountException e) {
             return generatorResponse(e);
         }
@@ -43,7 +104,7 @@ public class AccountResourceImpl implements UserResource {
     public ResponseEntity<AccountDto> update(@RequestBody AccountDto account) {
         log.info("AccountResourceImpl:update() startMethod");
         try {
-            return ResponseEntity.ok(userServices.update(account));
+            return ResponseEntity.ok(userService.update(account));
         } catch (AccountException e) {
             return generatorResponse(e);
         }
@@ -54,7 +115,7 @@ public class AccountResourceImpl implements UserResource {
     public ResponseEntity<AccountDto> create(@RequestBody AccountDto account) {
         log.info("AccountResourceImpl:create() startMethod");
         try {
-            return ResponseEntity.ok(userServices.create(account));
+            return ResponseEntity.ok(userService.create(account));
         } catch (AccountException e) {
             return generatorResponse(e);
         }
@@ -65,7 +126,7 @@ public class AccountResourceImpl implements UserResource {
     public ResponseEntity getMe() {
         log.info("AccountResourceImpl:getMe() startMethod");
         try {
-            return ResponseEntity.ok(userServices.getMe());
+            return ResponseEntity.ok(userService.getMe());
         } catch (AccountException e) {
             return generatorResponse(e);
         }
@@ -75,7 +136,7 @@ public class AccountResourceImpl implements UserResource {
     public ResponseEntity putMe(@RequestBody AccountDto accountDto) throws AccountException {
         log.info("AccountResourceImpl:putMe() startMethod");
         try {
-            return ResponseEntity.ok(userServices.putMe(accountDto));
+            return ResponseEntity.ok(userService.putMe(accountDto));
         } catch (AccountException e) {
             return generatorResponse(e);
         }
@@ -84,7 +145,7 @@ public class AccountResourceImpl implements UserResource {
     public ResponseEntity deleteMe() throws AccountException {
         log.info("AccountResourceImpl:deleteMe() startMethod");
         try {
-            return ResponseEntity.ok(userServices.delete());
+            return ResponseEntity.ok(userService.delete());
         } catch (AccountException e) {
             return generatorResponse(e);
         }
@@ -94,7 +155,7 @@ public class AccountResourceImpl implements UserResource {
     public ResponseEntity getId(@PathVariable UUID id) {
         log.info("AccountResourceImpl:getId() startMethod");
         try {
-            return ResponseEntity.ok(userServices.getId(id));
+            return ResponseEntity.ok(userService.getId(id));
         } catch (AccountException e) {
             return generatorResponse(e);
         }
@@ -104,7 +165,7 @@ public class AccountResourceImpl implements UserResource {
     public ResponseEntity deleteId(UUID id) throws AccountException {
         log.info("AccountResourceImpl:deleteId() startMethod");
         try {
-            return ResponseEntity.ok(userServices.deleteId(id));
+            return ResponseEntity.ok(userService.deleteId(id));
         } catch (AccountException e) {
             return generatorResponse(e);
         }

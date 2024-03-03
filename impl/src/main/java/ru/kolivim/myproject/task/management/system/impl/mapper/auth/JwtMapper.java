@@ -10,8 +10,8 @@ public class JwtMapper {
     public static JwtDto JwtDtoFromJwt(Jwt jwt){
         return JwtDto.builder()
                 .id(UUID.fromString(jwt.getClaim("user_id")))
-                .email(jwt.getSubject())
-                .roles(jwt.getClaim("roles"))
+                .login(jwt.getSubject())
+//                .roles(jwt.getClaim("roles"))
                 .build();
     }
 }

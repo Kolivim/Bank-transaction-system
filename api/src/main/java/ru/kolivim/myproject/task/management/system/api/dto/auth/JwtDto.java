@@ -19,8 +19,8 @@ public class JwtDto {
     private UUID id;
     @Schema(description = "id пользователя")
     private String userId;
-    @Schema(description = "email пользователя")
-    private String email;
-    @Schema(description = "список ролей пользователя")
-    private List<String> roles;
+    @Schema(description = "Login пользователя")
+    private String login;
+//    @Schema(description = "список ролей пользователя")
+//    private List<String> roles;
 }

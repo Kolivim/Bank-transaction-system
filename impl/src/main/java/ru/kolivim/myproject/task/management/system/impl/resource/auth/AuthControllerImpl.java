@@ -23,9 +23,8 @@ public class AuthControllerImpl implements AuthController {
 
     @Override
     public ResponseEntity<AuthenticateResponseDto> login(AuthenticateDto authenticateDto) {
-        System.out.println("login");
-//        log.info("NotificationService: create(NotificationDTO notificationDTO) startMethod, notificationDTO: {}",
-//                notificationDTO);
+        log.info("AuthControllerImpl: login(RegistrationDto registrationDto), registrationDto: {}",
+                authenticateDto);
 
         AuthenticateResponseDto authenticateResponseDto = authService.login(authenticateDto);
         if(authenticateResponseDto.getAccessToken()==null){
@@ -55,6 +54,13 @@ public class AuthControllerImpl implements AuthController {
     }
 
     @Override
+    public ResponseEntity<String> logout() {
+        return ResponseEntity.ok("logged out");
+    }
+
+    /** Ниже исходники */
+
+    @Override
     public ResponseEntity<String> sendRecoveryEmail(PasswordRecoveryDto dto) {
         if(!recoveryService.recover(dto.getEmail())){
             return ResponseEntity.badRequest().build();
@@ -68,11 +74,6 @@ public class AuthControllerImpl implements AuthController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().build();
-    }
-
-    @Override
-    public ResponseEntity<String> logout() {
-        return ResponseEntity.ok("logged out");
     }
 
     @Override

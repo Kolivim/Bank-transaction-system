@@ -2,11 +2,8 @@ package ru.kolivim.myproject.task.management.system.api.dto.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import ru.kolivim.myproject.task.management.system.api.dto.base.BaseDto;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -30,7 +27,7 @@ public class UserDto extends BaseDto {
     ZonedDateTime birthDate;
 
     @Schema(description = "ФИО пользователя")
-    private String fullName;
+    private String fullname;
 
     @Schema(description = "Логин")
     private String login;

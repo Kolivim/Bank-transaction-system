@@ -48,8 +48,8 @@ public class TechnicalUserConfig {
         log.info("TechnicalUserConfig:createContextForKafka start method");
         JwtDto jwtDto = new JwtDto();
         jwtDto.setUserId(UUID.randomUUID().toString());
-        jwtDto.setEmail("kafka@email");
-        jwtDto.setRoles(Collections.singletonList("ROLES_KAFKA"));
+        jwtDto.setLogin("kafka@email");
+//        jwtDto.setRoles(Collections.singletonList("ROLES_KAFKA"));
         JwtAuthenticationToken jwtAuthenticationToken = new JwtAuthenticationToken(createToken(jwtDto));
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(jwtAuthenticationToken);
@@ -59,8 +59,8 @@ public class TechnicalUserConfig {
         log.info("TechnicalUserConfig:createTestContext start method");
         JwtDto jwtDto = new JwtDto();
         jwtDto.setUserId("f7d1002-9cc6-11ee-8c90-0242ac120002");
-        jwtDto.setEmail("test@email");
-        jwtDto.setRoles(Collections.singletonList("ROLES_KAFKA"));
+        jwtDto.setLogin("test@email");
+//        jwtDto.setRoles(Collections.singletonList("ROLES_KAFKA"));
         JwtAuthenticationToken jwtAuthenticationToken = new JwtAuthenticationToken(createToken(jwtDto));
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(jwtAuthenticationToken);
@@ -70,11 +70,11 @@ public class TechnicalUserConfig {
         log.info("TechnicalUserConfig:createToken start method");
         Instant now = Instant.now();
         JwtClaimsSet claimsSet = JwtClaimsSet.builder()
-                .issuer("myApp")
+                .issuer("transactions")
                 .issuedAt(now)
-                .expiresAt(now.plus(30, ChronoUnit.MINUTES))
-                .subject(jwtDto.getEmail())
-                .claim("roles", jwtDto.getRoles())
+                .expiresAt(now.plus(8, ChronoUnit.HOURS))
+                .subject(jwtDto.getLogin())
+//                .claim("roles", jwtDto.getRoles())
                 .claim("user_id", jwtDto.getUserId())
                 .build();
         return accessTokenEncoder.encode(JwtEncoderParameters.from(claimsSet));

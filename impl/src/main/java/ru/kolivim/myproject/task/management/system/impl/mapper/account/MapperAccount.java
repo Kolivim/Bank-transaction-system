@@ -1,16 +1,10 @@
 package ru.kolivim.myproject.task.management.system.impl.mapper.account;
 
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.*;
 import org.springframework.stereotype.Component;
-import ru.kolivim.myproject.task.management.system.api.dto.account.AccountDto;
 import ru.kolivim.myproject.task.management.system.api.dto.auth.RegistrationDto;
 import ru.kolivim.myproject.task.management.system.domain.account.Account;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 
 @Slf4j
@@ -36,7 +30,7 @@ public abstract class MapperAccount {
         account.setIsDeleted(false);
         account.setBalance(registrationDto.getBalance());
         account.setBirthDate(registrationDto.getBirthDate());
-        account.setFullName(registrationDto.getFullName());
+        account.setFullname(registrationDto.getFullName());
         account.setLogin(registrationDto.getLogin());
         account.setPassword(registrationDto.getPassword());
 //        ArrayList<String> phoneList = new ArrayList<>();

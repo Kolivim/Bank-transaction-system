@@ -22,4 +22,8 @@ public class Phone extends BaseEntity {
     @Column(name = "user_id")
     private UUID userId;
 
+
+//    @ManyToOne
+//    private User user;
+
 }

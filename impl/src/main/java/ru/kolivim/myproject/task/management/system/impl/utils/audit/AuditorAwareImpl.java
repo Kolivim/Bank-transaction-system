@@ -17,7 +17,7 @@ public class AuditorAwareImpl implements AuditorAware<UserJsonType> {
         if (jwtDto==null){
             return Optional.of(unauthorizedJson());
         }
-        UserJsonType json = new UserJsonType(jwtDto.getId().toString(), jwtDto.getEmail());
+        UserJsonType json = new UserJsonType(jwtDto.getId().toString(), jwtDto.getLogin());
         return Optional.of(json);
     }
 

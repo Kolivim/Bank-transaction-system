@@ -22,4 +22,7 @@ public class Email extends BaseEntity{
     @Column(name = "user_id")
     private UUID userId;
 
+
+//    @ManyToOne
+//    private User user;
 }

@@ -18,11 +18,11 @@ public class TokenGenerator {
     public String createToken(JwtDto jwtDto) {
         Instant now = Instant.now();
         JwtClaimsSet claimsSet = JwtClaimsSet.builder()
-                .issuer("myApp")
+                .issuer("transactions")     //                .issuer("myApp")
                 .issuedAt(now)
-                .expiresAt(now.plus(30, ChronoUnit.MINUTES))
-                .subject(jwtDto.getEmail())
-                .claim("roles", jwtDto.getRoles())
+                .expiresAt(now.plus(8, ChronoUnit.HOURS))   // .expiresAt(now.plus(30, ChronoUnit.MINUTES))
+                .subject(jwtDto.getLogin())
+//                .claim("roles", jwtDto.getRoles())
                 .claim("user_id", jwtDto.getId())
                 .build();
 

@@ -100,8 +100,8 @@ springdoc:
     path: /api/v1/sw
 
 cron:
-  addPercent: "*/5 * * * * *"
-#  addPercent: "0 * * * * *"
+#  addPercent: "*/5 * * * * *"
+  addPercent: "0 * * * * *"
 #  percent: "* * * * * *"
 #  delayedPost: "0 * * * * *"
 #  wishHappyBirthday: "0 0 12 * * *"

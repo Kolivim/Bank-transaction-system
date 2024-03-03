@@ -57,6 +57,17 @@ public interface AuthController {
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegistrationDto loginDto);
 
+    @Operation(summary = "Выход из системы",
+            description = "Выход из системы и удаление токенов из списка активных, " +
+                    "для текущего авторизованного пользователя")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Выход из системы успешно выполнен")
+    })
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout();
+
 
     @Operation(summary = "Восстановление пароля (через e-mail)",
             description = "Запрос на отправку письма на e-mail со ссылкой на страницу восстановление пароля")
@@ -87,18 +98,6 @@ public interface AuthController {
     public ResponseEntity<String> changePassword(
             @Parameter(description = "id токена восстановления в БД") @PathVariable String linkId,
             @RequestBody NewPasswordDto passwordDto);
-
-
-    @Operation(summary = "Выход из системы",
-            description = "Выход из системы и удаление токенов из списка активных, " +
-                    "для текущего авторизованного пользователя")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Выход из системы успешно выполнен")
-    })
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout();
 
 
     @GetMapping("/captcha")

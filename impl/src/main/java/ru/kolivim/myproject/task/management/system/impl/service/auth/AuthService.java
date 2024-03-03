@@ -49,7 +49,7 @@ public class AuthService {
         if(jwtDto==null){return new AuthenticateResponseDto();}
         AuthenticateResponseDto responseDto = new AuthenticateResponseDto();
         responseDto.setAccessToken(tokenGenerator.createToken(jwtDto));
-        responseDto.setRefreshToken("Здесь будет рефреш токен");
+        responseDto.setRefreshToken("Зарезервированное поле для refresh токена");
         return responseDto;
     }
 
@@ -62,9 +62,6 @@ public class AuthService {
                     registrationDto);
             return false;
         }
-
-//        accountService.create(registrationDto);
-//        log.info("AuthService: register(*) endMethod");
 
         return accountService.create(registrationDto);
 

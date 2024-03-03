@@ -1,19 +1,13 @@
 package ru.kolivim.myproject.task.management.system.domain.user;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.NotAudited;
 import ru.kolivim.myproject.task.management.system.domain.base.BaseEntity;
-import ru.kolivim.myproject.task.management.system.domain.base.audit.BaseAuditedEntity;
 import ru.kolivim.myproject.task.management.system.domain.role.Role;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 
 @Entity
@@ -46,7 +40,7 @@ public class User extends BaseEntity /*BaseAuditedEntity*/ {
     ZonedDateTime birthDate;
 
     @Column(name = "full_name")
-    private String fullName;
+    private String fullname;
 
     @Column(name = "login")
     private String login;
@@ -60,6 +54,14 @@ public class User extends BaseEntity /*BaseAuditedEntity*/ {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<Phone> phoneList = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<Email> emailList = new ArrayList<>();
+
     /*
     @NotNull
     @Email
