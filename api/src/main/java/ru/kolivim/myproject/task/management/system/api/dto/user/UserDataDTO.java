@@ -18,4 +18,9 @@ public class UserDataDTO {
     @Schema(description = "Email пользователя, на замену приложенному")
     private String newEmail;
 
+    @Schema(description = "Сумма для перевода")
+    private Double sum;
+
+    @Schema(description = "Логин пользователя, которому отправляется перевод")
+    private String login;
 }

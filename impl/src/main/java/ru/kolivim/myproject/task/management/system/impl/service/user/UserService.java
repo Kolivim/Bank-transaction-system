@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.RequestBody;
 import ru.kolivim.myproject.task.management.system.api.dto.account.AccountDto;
 import ru.kolivim.myproject.task.management.system.api.dto.account.AccountSearchDto;
 import ru.kolivim.myproject.task.management.system.api.dto.auth.AuthenticateDto;
@@ -28,6 +29,7 @@ import ru.kolivim.myproject.task.management.system.impl.mapper.user.UserMapper;
 import ru.kolivim.myproject.task.management.system.impl.repository.user.EmailRepository;
 import ru.kolivim.myproject.task.management.system.impl.repository.user.PhoneRepository;
 import ru.kolivim.myproject.task.management.system.impl.repository.user.UserRepository;
+import ru.kolivim.myproject.task.management.system.impl.service.account.AccountService;
 import ru.kolivim.myproject.task.management.system.impl.service.role.RoleService;
 import ru.kolivim.myproject.task.management.system.impl.utils.auth.AuthUtil;
 import ru.kolivim.myproject.task.management.system.impl.repository.account.AccountRepository;
@@ -43,6 +45,8 @@ import java.util.*;
 @RequiredArgsConstructor
 public class UserService {
 
+    private final AccountService accountService;
+
     private final UserRepository userRepository;
     private final PhoneRepository phoneRepository;
     private final EmailRepository emailRepository;
@@ -50,23 +54,14 @@ public class UserService {
     private final MapperAccount mapperAccount;
     private final UserMapper userMapper;
 
-    /** Исходник: */
+    /** Отрефакторить: */
     private static final String BADREUQEST = "bad reqest";
     private final AccountRepository accountRepository;
     private final RoleService roleService;
 
-    /** Ниже начало методов: */
-
-    /** Определиться - стоит ли сделать метод синхронизированным? Посмотреть к с друзьями сделали синхронизацию в SN!!! */
     public Boolean doesUserDataExist(RegistrationDto registrationDto) {
         log.info("UserService: doesUserDataExist(RegistrationDto registrationDto) startMethod, RegistrationDto: {}",
                 registrationDto);
-
-        /*
-        Specification userSpecification = SpecificationUtils.getBaseSpecification(getBaseSearchDto())
-                .and(SpecificationUtils.in(User_.LOGIN, registrationDto.getLogin()));
-        List<User> users = userRepository.findAll(userSpecification);
-        */
 
         Optional<User> user = userRepository.findByLoginAndIsDeletedFalse(registrationDto.getLogin());
         int countPhone = phoneRepository.countByPhone(registrationDto.getPhone());
@@ -77,12 +72,6 @@ public class UserService {
 
         return !user.isEmpty() || countPhone !=0 || countEmail != 0;
 
-        /** Исходник: */
-        /*
-        return accountRepository.findFirstByEmail(email).isPresent();
-        */
-        //return null;
-
     }
 
     public JwtDto getJwtDto(AuthenticateDto authenticateDto) {
@@ -90,32 +79,13 @@ public class UserService {
                 authenticateDto);
 
         Optional<User> user = userRepository.findByLogin(authenticateDto.getLogin());
-//        Optional<User> user = userRepository.findByLoginAndIsDeletedFalse(authenticateDto.getLogin());
         Assert.isTrue(user.isPresent());
         Assert.isTrue(user.get().getPassword().equals(authenticateDto.getPassword()));
         JwtDto jwtDto = new JwtDto();
         jwtDto.setId(user.get().getId());
         jwtDto.setLogin(user.get().getLogin());
-//        jwtDto.setRoles(listOfRolesFromSetOfRoles(user.get().getRoles()));
-
-        /*
-        Optional<Account> account = accountRepository.findFirstByEmail(authenticateDto.getEmail());
-        Assert.isTrue(account.isPresent());
-        Assert.isTrue(account.get().getPassword().equals(authenticateDto.getPassword()));
-        JwtDto jwtDto = new JwtDto();
-        jwtDto.setId(account.get().getId());
-        jwtDto.setEmail(account.get().getEmail());
-        jwtDto.setRoles(listOfRolesFromSetOfRoles(account.get().getRoles()));
-        account.get().setLastOnlineTime(LocalDateTime.now());
-        */
 
         return jwtDto;
-    }
-
-    private BaseSearchDto getBaseSearchDto(){
-        BaseSearchDto baseSearchDto = new BaseSearchDto();
-        baseSearchDto.setIsDeleted(false);
-        return  baseSearchDto;
     }
 
 
@@ -235,36 +205,12 @@ public class UserService {
 
     public Page<UserDto> searchFullname(UserDto userDto, Pageable pageable) {
         log.info("UserService:searchFullname startMethod, UserDto: {}", userDto);
-//        getErrorIfNull(accountSearchDto);
-//        getErrorIfNull(pageable);
-
-
-//        Specification userSpecification = SpecificationUtils.getBaseSpecification(getBaseSearchDto())
-//                .and(SpecificationUtils.like(User_.FULL_NAME, userDto.getFullName()));
-//        Page<User> userPage = userRepository.findAll(userSpecification, pageable);
-
-        /*
-        Specification spec = equal(Account_.COUNTRY, accountSearchDto.getCountry())
-                .or(like(Account_.FIRST_NAME, accountSearchDto.getFirstName()))
-                .or(like(Account_.LAST_NAME, accountSearchDto.getLastName()))
-                .or(like(Account_.CITY, accountSearchDto.getCity()))
-                .or(equal(Account_.EMAIL, accountSearchDto.getEmail()))
-                .or(between(Account_.BIRTH_DATE, accountSearchDto.getAgeFrom(), accountSearchDto.getAgeTo()))
-                .or(in(Account_.ID, accountSearchDto.getIds()));
-        */
 
         Page<User> userPage = userRepository.findAllByFullnameLikeAndIsDeletedFalse(userDto.getFullname(), pageable);
 
         log.info("UserService:searchFullName Page<User>: {}", userPage);
         Page<UserDto> userDtoPage = userPage.map(userMapper::toUserDTO);
         log.info("UserService:searchFullName Page<UserDto>: {}", userDtoPage);
-
-        /*
-        for(UserDto user : userDtoPage) {
-            user.setEmailList(getUserEmails(user));
-            user.setPhoneList(getUserPhones(user));
-        }
-        */
 
         setUserEmailsAndPhones(userDtoPage);
         log.info("UserService:searchFullName Page<UserDto> with emailList: {}", userDtoPage);
@@ -306,14 +252,46 @@ public class UserService {
         User user = userRepository.findById(email.getUserId()).orElseThrow();
         log.info("UserService:searchEmail(*) User: {}", user);
 
-        /*
-        UserDto userDto = userMapper.toUserDTO(user);
-        setUserEmailsAndPhones(userDto);
-        log.info("UserService:searchEmail(*) UserDto with EandP: {}", userDto);
-        return userDto;
-        */
-
         return getUserDto(user);
+    }
+
+    public UserDto pay(UserDataDTO userDataDTO) {
+        log.info("UserService:pay(UserDataDTO userDataDTO) startMethod, UserDataDTO: {}", userDataDTO);
+
+        UUID userToPay = getUserToPay(userDataDTO).getId();
+        UUID user = AuthUtil.getUserId();
+
+        accountService.pay(userToPay, user, userDataDTO.getSum());
+
+        User userAfterPay = userRepository.findByIdAndIsDeletedFalse(user).orElseThrow();
+        return getUserDto(userAfterPay);
+    }
+
+    private User getUserToPay(UserDataDTO userDataDTO) {
+        log.info("UserService:getUserToPay(UserDataDTO userDataDTO)  startMethod, UserDataDTO: {}", userDataDTO);
+        User user = new User();
+
+        if (!userDataDTO.getLogin().isEmpty()) {
+            user = userRepository.findByLoginAndIsDeletedFalse(userDataDTO.getLogin()).orElseThrow();
+            log.info("UserService:getUserToPay(*) with Login and received User: {}", user);
+            return user;
+        }
+
+        if (!userDataDTO.getPhone().isEmpty()) {
+            Phone phone = phoneRepository.findByPhone(userDataDTO.getPhone()).orElseThrow();
+            user = userRepository.findByIdAndIsDeletedFalse(phone.getUserId()).orElseThrow();
+            log.info("UserService:getUserToPay(*) with Phone and received User: {}", user);
+            return user;
+        }
+
+        if (!userDataDTO.getEmail().isEmpty()) {
+            Email email = emailRepository.findByEmail(userDataDTO.getEmail()).orElseThrow();
+            user = userRepository.findByIdAndIsDeletedFalse(email.getUserId()).orElseThrow();
+            log.info("UserService:getUserToPay(*) with Email and received User: {}", user);
+            return user;
+        }
+
+        return user;
     }
 
     private UserDto getUserDto(User user) {
@@ -327,8 +305,6 @@ public class UserService {
         log.info("UserService:setUserEmailsAndPhones(Page<UserDto> userDtoPage) startMethod, Page<UserDto>: {}",
                 userDtoPage);
         for(UserDto user : userDtoPage) {
-            /*user.setEmailList(getUserEmails(user));
-            user.setPhoneList(getUserPhones(user));*/
             setUserEmailsAndPhones(user);
         }
     }
@@ -357,6 +333,12 @@ public class UserService {
         return phoneList;
     }
 
+    private BaseSearchDto getBaseSearchDto(){
+        BaseSearchDto baseSearchDto = new BaseSearchDto();
+        baseSearchDto.setIsDeleted(false);
+        return  baseSearchDto;
+    }
+
     /*
     private void getErrorIfNull(Object object) {
         if ((object == null)) {
@@ -367,7 +349,7 @@ public class UserService {
 
 
     ///////////////////////////////////////////////
-    /** Ниже остались в исходном виде: */
+    /** Ниже отрефакторить: */
 
     public AccountDto create(AccountDto accountDto) throws AccountException {
         log.info("AccountService:create() startMethod");

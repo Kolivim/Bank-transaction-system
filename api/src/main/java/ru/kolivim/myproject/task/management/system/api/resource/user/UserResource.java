@@ -420,6 +420,44 @@ public interface UserResource {
     @PostMapping("/search/email")
     public ResponseEntity<UserDto> searchEmail(@RequestBody UserDataDTO userDataDTO);
 
+    @Operation(summary = "Перевод денег",
+            description = "Отправка запроса на перевода денег со счета авторизованного пользователя, на счет " +
+                    "пользователя с указанным логином / телефоном / email")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Метод успешно выполнен",
+                    content = {
+                            @Content(schema = @Schema(implementation = void.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Не верный запрос",
+                    content = {
+                            @Content(schema = @Schema(implementation = void.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Авторизация не пройдена. Необходимо авторизоваться",
+                    content = {
+                            @Content(schema = @Schema(implementation = void.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Доступ к данным запрещен",
+                    content = {
+                            @Content(schema = @Schema(implementation = void.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Переданный неверный запрос",
+                    content = {
+                            @Content(schema = @Schema(implementation = void.class))
+                    })
+    })
+    @PostMapping("/pay")
+    public ResponseEntity<UserDto> pay(@RequestBody UserDataDTO userDataDTO);
+
 
 
     //////////////////////////////////////////////////////////////////////

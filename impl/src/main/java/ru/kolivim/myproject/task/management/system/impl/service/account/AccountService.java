@@ -60,7 +60,6 @@ public class AccountService {
         log.info("AccountService: create(RegistrationDto registrationDto), registrationDto: {}",
                 registrationDto);
 
-//        Account account = accountRepository.save(mapperAccount.toAccount(registrationDto));
         Account account = accountRepository.save(mapperAccount.toAccount(registrationDto, getMaxBalance(registrationDto)));
         Phone phone = phoneRepository.save(phoneMapper.toPhone(registrationDto, account.getId()));
         Email email = emailRepository.save(emailMapper.toEmail(registrationDto, account.getId()));
@@ -68,7 +67,6 @@ public class AccountService {
         log.info("AccountService: create(*) endMethod, Account: {}, Phone: {}, Email: {}",
                 account, phone, email);
         return true;
-
     }
 
     /** Нужно делать потокобезопасным */
@@ -85,6 +83,30 @@ public class AccountService {
                     log.info("AccountService: addPercent() сохранен Account: {}", accountRepository.save(acc));});
         accountRepository.saveAll(accountList);
     }
+
+    public synchronized boolean pay(UUID userToPay, UUID user, Double sum) {
+        log.info("AccountService: pay(UUID userToPay, UUID user) startMethod, UUID userToPay : {}, UUID user: {}" ,
+                userToPay, user);
+
+        Account account = accountRepository.findById(user).orElseThrow();
+        Account accountTo = accountRepository.findById(userToPay).orElseThrow();
+
+        Double sumAfter = account.getBalance() - sum;
+        Double sumAfterTo = accountTo.getBalance() + sum;
+
+        if(sumAfter > 0 && !userToPay.equals(user)) {
+            account.setBalance(sumAfter);
+            accountTo.setBalance(sumAfterTo);
+            accountRepository.save(account);
+            accountRepository.save(accountTo);
+        } else {
+            return false;
+        }
+
+        return false;
+    }
+
+
 
     private double getMaxBalance(RegistrationDto registrationDto) {
         log.info("AccountService: getMaxBalance(RegistrationDto registrationDto), registrationDto: {}",

@@ -84,6 +84,11 @@ public class UserResourceImpl implements UserResource {
         return ResponseEntity.ok(userService.searchEmail(userDataDTO));
     }
 
+    @Override
+    public ResponseEntity<UserDto> pay(@RequestBody UserDataDTO userDataDTO) {
+        return ResponseEntity.ok(userService.pay(userDataDTO));
+    }
+
 
 
     //////////////////////////////////////////////////////////////////////////////////
